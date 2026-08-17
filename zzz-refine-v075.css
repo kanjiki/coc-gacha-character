@@ -1,0 +1,36 @@
+/* v0.7.5 - right stack higher / skill modules lower */
+
+/* Right-side information: move the entire cluster upward. */
+html[data-visual-theme="zzz"] .investigator-info{
+  top:30.5%!important;
+  height:36%!important;
+  gap:6px!important;
+}
+html[data-visual-theme="zzz"] .rating-block{
+  top:67.5%!important;
+  bottom:auto!important;
+  width:20%!important;
+}
+
+/* Keep SKILL / ULTIMATE completely below the stat ring. */
+html[data-visual-theme="zzz"] .skill-block{
+  bottom:2.2%!important;
+  top:auto!important;
+  left:31%!important;
+  width:42.5%!important;
+  align-items:end!important;
+}
+html[data-visual-theme="zzz"] .skill-primary{
+  min-height:118px!important;
+  align-self:end!important;
+}
+html[data-visual-theme="zzz"] .ultimate{
+  min-height:154px!important;
+  align-self:end!important;
+}
+
+@media(max-width:800px){
+  html[data-visual-theme="zzz"] .investigator-info{top:31%!important;height:35%!important}
+  html[data-visual-theme="zzz"] .rating-block{top:68%!important}
+  html[data-visual-theme="zzz"] .skill-block{bottom:2%!important}
+}
