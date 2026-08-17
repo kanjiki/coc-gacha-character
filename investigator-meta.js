@@ -1,6 +1,5 @@
 (()=>{
   const $=s=>document.querySelector(s);
-  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
   function ensureInputs(){
     if($('#pcOccupation'))return;
@@ -16,13 +15,20 @@
     identity.insertAdjacentElement('afterend',box);
   }
 
+  function ensureOccupationInBuild(){
+    const dl=$('.profile-block dl');
+    if(!dl)return;
+    document.querySelector('#resultOccupation')?.remove();
+    if($('#occupationText'))return;
+    const row=document.createElement('div');
+    row.className='occupation-row';
+    row.innerHTML='<dt>OCCUPATION</dt><dd id="occupationText">—</dd>';
+    dl.appendChild(row);
+  }
+
   function ensureResultPanel(){
     const card=$('#resultCard');if(!card)return;
-    if(!$('#resultOccupation')){
-      const name=$('.name-block');
-      const job=document.createElement('p');job.id='resultOccupation';job.className='result-occupation';
-      name?.querySelector('.urban-stickers')?.insertAdjacentElement('beforebegin',job);
-    }
+    ensureOccupationInBuild();
     if(!$('#investigatorInfo')){
       const panel=document.createElement('section');
       panel.id='investigatorInfo';panel.className='investigator-info';
@@ -41,7 +47,7 @@
     const scenarios=$('#pcScenarios')?.value?.trim()||'—';
     const memo=$('#pcMemo')?.value?.trim()||'—';
     const set=(id,v)=>{const el=$(id);if(el)el.textContent=v;};
-    set('#resultOccupation',occupation);set('#resultProfile',profile);set('#resultScenarios',scenarios);set('#resultMemo',memo);
+    set('#occupationText',occupation);set('#resultProfile',profile);set('#resultScenarios',scenarios);set('#resultMemo',memo);
   }
 
   document.addEventListener('DOMContentLoaded',()=>{
