@@ -1,0 +1,39 @@
+/* v0.6.4 - definitive URBAN / ACTION layout fixes */
+html[data-visual-theme="zzz"] .name-block{right:4%;top:10.5%;width:24%;display:flex;flex-direction:column;align-items:flex-start;gap:4px;z-index:14}
+html[data-visual-theme="zzz"] .name-block .mini-label{font-size:9px;padding:4px 7px;letter-spacing:.13em;margin:0}
+html[data-visual-theme="zzz"] .name-block h2{display:block;width:100%;max-width:100%;font-size:clamp(22px,2.25vw,36px)!important;line-height:.94;padding:6px 10px 7px;margin:0;box-shadow:4px 4px 0 var(--accent);white-space:normal;overflow-wrap:anywhere;word-break:keep-all;max-height:2.15em;overflow:hidden}
+html[data-visual-theme="zzz"] .name-block>p:last-of-type{display:block;width:max-content;max-width:100%;font:900 9px/1.2 monospace;padding:3px 6px;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html[data-visual-theme="zzz"] .name-block .urban-stickers{position:static!important;display:flex!important;width:100%!important;gap:5px!important;flex-wrap:wrap;align-items:flex-start;justify-content:flex-start;margin-top:2px;z-index:auto}
+html[data-visual-theme="zzz"] .name-block .urban-stickers span{font-size:8px;padding:3px 6px;box-shadow:2px 2px 0 var(--urban-yellow)}
+html[data-visual-theme="zzz"] .name-block .urban-stickers span:nth-child(2){box-shadow:2px 2px 0 #111}
+html[data-visual-theme="zzz"] .name-block .urban-stickers span:nth-child(3){box-shadow:2px 2px 0 var(--accent)}
+
+/* Keep the ring HUD-like */
+html[data-visual-theme="zzz"] .spectrum-overlay{opacity:.84;filter:drop-shadow(4px 6px 0 rgba(0,0,0,.08))}
+
+/* Right-side modules */
+html[data-visual-theme="zzz"] .coc-block{right:4%;top:47%;width:22.5%;padding:9px 10px;box-shadow:3px 3px 0 #111}
+html[data-visual-theme="zzz"] .rating-block{right:4%;top:68.5%;width:22.5%;padding:9px 10px;box-shadow:3px 3px 0 #111}
+html[data-visual-theme="zzz"] .coc-block .mini-label,html[data-visual-theme="zzz"] .rating-block .mini-label{padding:3px 6px;font-size:9px;letter-spacing:.08em}
+html[data-visual-theme="zzz"] .result-stats{gap:1px 6px;font-size:8px}
+html[data-visual-theme="zzz"] .result-stats div{padding:2px 0}
+html[data-visual-theme="zzz"] .rating-row{padding:3px 0;font-size:9px}
+html[data-visual-theme="zzz"] .rating-row strong{min-width:23px;font-size:13px}
+
+/* SKILL / ULTIMATE: two modules side-by-side. Primary skill itself is ONE card. */
+html[data-visual-theme="zzz"] .skill-block{background:transparent!important;border:0!important;padding:0!important;box-shadow:none!important;clip-path:none!important;display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important;align-items:stretch!important}
+html[data-visual-theme="zzz"] .skill-primary{grid-column:1;display:flex;flex-direction:column;position:relative;background:#fff;border:2px solid #111;min-width:0;overflow:visible}
+html[data-visual-theme="zzz"] .skill-primary>.mini-label{align-self:flex-start;margin:-16px 0 4px -2px;background:var(--urban-yellow);color:#111;border:2px solid #111;padding:3px 7px;font:1000 9px/1 monospace;z-index:2}
+html[data-visual-theme="zzz"] .skill-primary>h3{margin:0!important;padding:4px 10px 4px!important;border:0!important;background:transparent!important;box-shadow:none!important;font-size:15px!important;line-height:1.15!important;min-height:0!important}
+html[data-visual-theme="zzz"] .skill-primary>p:last-child{margin:0!important;padding:3px 10px 9px!important;border:0!important;background:transparent!important;box-shadow:none!important;font-size:8.5px!important;line-height:1.45!important;min-height:44px!important}
+html[data-visual-theme="zzz"] .ultimate{grid-column:2!important;grid-row:auto!important;margin:0!important;min-width:0}
+html[data-visual-theme="zzz"] .ultimate .mini-label{margin:7px 0 2px 9px;padding:3px 6px;font-size:9px}
+html[data-visual-theme="zzz"] .ultimate h3{margin:2px 9px 3px;font-size:16px;line-height:1.1}
+html[data-visual-theme="zzz"] .ultimate>p:last-child{margin:0 9px 8px;font-size:9px;line-height:1.45}
+html[data-visual-theme="zzz"] .ultimate:after{content:"ULT // MAX OUTPUT";font-size:7px;right:7px;top:7px}
+
+html[data-visual-theme="zzz"] .history-block{padding:9px 10px;box-shadow:3px 3px 0 var(--urban-yellow)}
+html[data-visual-theme="zzz"] .history-block .mini-label{padding:3px 6px;font-size:9px}
+html[data-visual-theme="zzz"] .history-line{padding:3px 0;font-size:9px}
+
+@media(max-width:800px){html[data-visual-theme="zzz"] .name-block{width:24%}html[data-visual-theme="zzz"] .coc-block,html[data-visual-theme="zzz"] .rating-block{width:23%}}
