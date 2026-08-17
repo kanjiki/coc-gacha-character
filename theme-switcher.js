@@ -4,7 +4,7 @@
   const input=$('#visualTheme');
   const result=$('#resultVisualTheme');
   const badge=$('.version-badge');
-  const THEMES={persona:{href:'persona-theme.css?v=0.7.1',label:'COMIC / PHANTOM'},zzz:{href:'zzz-theme-v071.css?v=0.7.1',label:'URBAN / ACTION'}};
+  const THEMES={persona:{href:'persona-theme.css?v=0.7.2',label:'COMIC / PHANTOM'},zzz:{href:'zzz-theme-v071.css?v=0.7.2',label:'URBAN / ACTION'}};
   function applyTheme(name){
     if(!THEMES[name])name='persona';
     const t=THEMES[name];
@@ -13,8 +13,8 @@
     if(result)result.value=name;
     document.documentElement.dataset.visualTheme=name;
     localStorage.setItem('coc-gacha-visual-theme',name);
-    if(badge)badge.textContent=`v0.7.1 // ${t.label} // 2026-08-18`;
-    const footer=[...document.querySelectorAll('#resultCard footer span')].at(-1);if(footer)footer.textContent='TRPG LAB // CoC6 // v0.7.1';
+    if(badge)badge.textContent=`v0.7.2 // ${t.label} // 2026-08-18`;
+    const footer=[...document.querySelectorAll('#resultCard footer span')].at(-1);if(footer)footer.textContent='TRPG LAB // CoC6 // v0.7.2';
     document.dispatchEvent(new CustomEvent('gacha-visual-theme-change',{detail:{theme:name}}));
   }
   input?.addEventListener('change',()=>applyTheme(input.value));
