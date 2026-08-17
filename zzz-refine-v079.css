@@ -1,0 +1,37 @@
+/* v0.7.9 - rarity under name + fixed identity stack */
+html[data-visual-theme="zzz"] .topline{justify-content:flex-end!important}
+html[data-visual-theme="zzz"] .name-block #rarityLine.rarity-under-name{
+  position:static!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  width:max-content!important;
+  max-width:100%!important;
+  margin:8px 0 4px!important;
+  padding:8px 13px 7px!important;
+  background:var(--ui-accent)!important;
+  color:#111!important;
+  border:2px solid #111!important;
+  border-left:8px solid #111!important;
+  box-shadow:5px 5px 0 var(--accent)!important;
+  clip-path:polygon(0 0,94% 0,100% 50%,94% 100%,0 100%)!important;
+  transform:rotate(-1deg)!important;
+  font:1000 15px/1 monospace!important;
+  letter-spacing:.055em!important;
+  text-shadow:none!important;
+  white-space:nowrap!important;
+}
+html[data-visual-theme="zzz"] .name-block #rarityLine.rarity-under-name:before{
+  content:"RARITY //"!important;
+  display:inline-block!important;
+  margin-right:9px!important;
+  color:#111!important;
+  font:1000 8px/1 monospace!important;
+  letter-spacing:.14em!important;
+}
+html[data-visual-theme="zzz"] .name-block #rarityLine.rarity-under-name:after{content:none!important;display:none!important}
+
+/* Give the metadata below the name enough breathing room after rarity moves into the stack. */
+html[data-visual-theme="zzz"] .name-block{gap:3px!important}
+html[data-visual-theme="zzz"] .name-block>p:last-of-type{margin-top:2px!important}
+html[data-visual-theme="zzz"] .result-occupation{margin-top:2px!important}
+html[data-visual-theme="zzz"] .name-block .urban-stickers{margin-top:3px!important}
