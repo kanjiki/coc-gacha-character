@@ -1,0 +1,58 @@
+/* v0.7.1 - investigator info layout */
+html[data-visual-theme="zzz"] .name-font-control{display:none!important}
+
+/* Larger ROLE band, fixed between PROFILE and IMPLEMENTATION. */
+html[data-visual-theme="zzz"] .huge-word{
+  left:3.8%!important;top:50.5%!important;width:27%!important;max-width:27%!important;
+  padding:8px 18px 11px!important;font-size:clamp(58px,6.2vw,96px)!important;line-height:.76!important;
+  transform:rotate(-5deg) skewX(-10deg)!important;z-index:2!important;overflow:hidden!important;
+}
+
+/* Numeric characteristic table is removed from the card; ring is the visual stat summary. */
+html[data-visual-theme="zzz"] .coc-block{display:none!important}
+
+/* Compact rating module. */
+html[data-visual-theme="zzz"] .rating-block{
+  right:4%!important;top:auto!important;bottom:5.5%!important;width:20%!important;
+  padding:8px 9px!important;box-shadow:3px 3px 0 #111!important;
+}
+html[data-visual-theme="zzz"] .rating-block .mini-label{font-size:8px!important;padding:3px 6px!important}
+html[data-visual-theme="zzz"] .rating-row{padding:2px 0!important;font-size:8px!important}
+html[data-visual-theme="zzz"] .rating-row strong{font-size:11px!important;min-width:21px!important}
+
+/* Investigator metadata fills the former stats/rating space. */
+html[data-visual-theme="zzz"] .investigator-info{
+  position:absolute;right:3.8%;top:43%;width:24.2%;height:31%;z-index:10;
+  display:grid;grid-template-rows:auto auto 1fr;gap:7px;
+  color:#111;
+}
+html[data-visual-theme="zzz"] .investigator-info .info-section{
+  background:rgba(248,248,246,.96);border:2px solid #111;box-shadow:3px 3px 0 #111;
+  padding:7px 9px;min-height:0;overflow:hidden;
+}
+html[data-visual-theme="zzz"] .investigator-info .mini-label{
+  display:inline-block;margin:0 0 4px;background:#111;color:#fff;padding:3px 6px;
+  font:1000 8px/1 monospace;letter-spacing:.08em;
+}
+html[data-visual-theme="zzz"] .investigator-info p:not(.mini-label){
+  margin:0;font-size:8.5px;line-height:1.45;white-space:pre-wrap;overflow-wrap:anywhere;
+}
+
+/* Occupation sits directly below the name/reading. */
+html[data-visual-theme="zzz"] .result-occupation{
+  margin:0!important;display:inline-block!important;max-width:100%;
+  color:#111!important;background:var(--ui-accent)!important;border:1px solid #111!important;
+  padding:3px 7px!important;font:1000 9px/1.2 monospace!important;letter-spacing:.06em;
+  transform:skewX(-8deg);
+}
+
+/* Input metadata fields. */
+.investigator-meta-inputs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+.investigator-meta-inputs textarea{width:100%;resize:vertical;border:1px solid var(--line);background:#fff;color:var(--ink);padding:12px 13px;font:inherit}
+html[data-visual-theme="zzz"] .investigator-meta-inputs{padding:14px;border:2px solid #111;background:#fff;box-shadow:3px 3px 0 rgba(0,0,0,.16)}
+
+@media(max-width:800px){
+  html[data-visual-theme="zzz"] .huge-word{left:4%!important;width:27%!important;max-width:27%!important;font-size:72px!important}
+  html[data-visual-theme="zzz"] .investigator-info{width:24.5%!important}
+  .investigator-meta-inputs{grid-template-columns:1fr}
+}
