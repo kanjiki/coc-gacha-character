@@ -1,0 +1,24 @@
+/* v0.6.3 - URBAN/ACTION layout polish only */
+html[data-visual-theme="zzz"] .name-block{right:4.2%;top:10.2%;width:24.5%;display:flex;flex-direction:column;align-items:flex-start;gap:4px;z-index:13}
+html[data-visual-theme="zzz"] .name-block .mini-label{margin:0 0 2px;font-size:9px;line-height:1;padding:4px 7px}
+html[data-visual-theme="zzz"] .name-block h2{display:block;width:100%;max-width:100%;margin:0;padding:7px 10px 8px;box-sizing:border-box;font-size:clamp(23px,2.4vw,36px)!important;line-height:.92!important;letter-spacing:-.055em;white-space:normal;overflow-wrap:anywhere;word-break:break-word;max-height:76px;overflow:hidden}
+html[data-visual-theme="zzz"] .name-block>p:last-child{display:block;max-width:100%;margin:0;padding:3px 7px;font-size:9px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;box-sizing:border-box}
+html[data-visual-theme="zzz"] .urban-stickers{right:4.5%;top:26.4%;width:23.5%;gap:5px;z-index:13}
+html[data-visual-theme="zzz"] .urban-stickers span{font-size:8px;padding:3px 6px;box-shadow:2px 2px 0 var(--urban-yellow)}
+html[data-visual-theme="zzz"] .urban-stickers span:nth-child(2){box-shadow:2px 2px 0 #111}
+html[data-visual-theme="zzz"] .urban-stickers span:nth-child(3){box-shadow:2px 2px 0 var(--accent)}
+
+/* Skill block: preserve readable description even when title wraps */
+html[data-visual-theme="zzz"] .skill-block{left:31%;bottom:5.4%;width:40.5%;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:8px;align-items:stretch}
+html[data-visual-theme="zzz"] .skill-block>p.mini-label{font-size:9px;padding:3px 7px;line-height:1.1}
+html[data-visual-theme="zzz"] .skill-block>h3{min-height:43px;display:flex;align-items:center;padding:8px 10px 5px;font-size:15px;line-height:1.18;overflow-wrap:anywhere;word-break:break-word}
+html[data-visual-theme="zzz"] .skill-block>p:not(.mini-label){min-height:48px;max-height:56px;overflow:hidden;padding:4px 10px 8px;font-size:9px;line-height:1.45}
+html[data-visual-theme="zzz"] .ultimate{min-height:101px}
+html[data-visual-theme="zzz"] .ultimate .mini-label{margin:7px 0 2px 9px;padding:3px 6px;font-size:9px}
+html[data-visual-theme="zzz"] .ultimate h3{margin:4px 9px 5px;font-size:15px;line-height:1.14;overflow-wrap:anywhere}
+html[data-visual-theme="zzz"] .ultimate>p:last-child{margin:0 9px 8px;font-size:9px;line-height:1.4;max-height:52px;overflow:hidden}
+html[data-visual-theme="zzz"] .ultimate:after{right:7px;top:7px;font-size:7px}
+
+/* Right-column spacing */
+html[data-visual-theme="zzz"] .coc-block{top:47.5%;right:3.7%;width:23.5%;padding:9px 10px}
+html[data-visual-theme="zzz"] .rating-block{top:69.5%;right:4%;width:23%;padding:9px 10px}
