@@ -1,4 +1,8 @@
 const STAT_KEYS=['STR','CON','POW','DEX','APP','SIZ','INT','EDU','SAN','HP','MP','MOV'];
+const STAT_ALIASES={
+ STR:['STR','筋力'],CON:['CON','体力'],POW:['POW','精神力'],DEX:['DEX','敏捷性'],APP:['APP','外見'],SIZ:['SIZ','体格'],INT:['INT','知性'],EDU:['EDU','教育'],
+ SAN:['正気度','現在正気度','SAN','SAN値','正気度ポイント'],HP:['HP','耐久力','耐久'],MP:['MP','マジックポイント'],MOV:['MOV','移動率','移動']
+};
 const QUESTIONS=[
  {q:'戦闘になったら？',a:[['先に殴る','atk'],['仲間を守る','tank'],['敵を観察する','control'],['戦闘を避ける','support']]},
  {q:'仲間がピンチ。',a:[['危険でも助ける','support'],['敵を先に倒す','atk'],['最適解を探す','control'],['状況をひっくり返す','special']]},
@@ -59,6 +63,14 @@ iacharaFile.addEventListener('change',async e=>{
 function normalizeLabel(value=''){
  return String(value).trim().toUpperCase().replace(/[：:：\s　_-]/g,'');
 }
+function statFromLabel(label=''){
+ const normalized=normalizeLabel(label);
+ for(const stat of STAT_KEYS){
+   const aliases=STAT_ALIASES[stat]||[stat];
+   if(aliases.some(a=>normalizeLabel(a)===normalized))return stat;
+ }
+ return null;
+}
 function numericValue(value){
  if(value===null||value===undefined)return null;
  if(typeof value==='number'&&Number.isFinite(value))return value;
@@ -88,14 +100,12 @@ function parseIacharaJson(root){
    const label=node.label??node.name??node.key??node.title;
    const val=node.value??node.current??node.max??node.number;
    if(label!==undefined){
-     const key=normalizeLabel(label);
-     const stat=STAT_KEYS.find(k=>normalizeLabel(k)===key);
+     const stat=statFromLabel(label);
      const num=numericValue(val);
      if(stat&&num!==null&&out.stats[stat]===undefined)out.stats[stat]=num;
    }
    for(const [k,v] of Object.entries(node)){
-     const key=normalizeLabel(k);
-     const stat=STAT_KEYS.find(s=>normalizeLabel(s)===key);
+     const stat=statFromLabel(k);
      const num=numericValue(v);
      if(stat&&num!==null&&out.stats[stat]===undefined)out.stats[stat]=num;
      if((k==='name'||k==='characterName')&&typeof v==='string'&&!out.name)out.name=v;
@@ -118,13 +128,18 @@ function parseIacharaText(text){
    }
    for(const stat of STAT_KEYS){
      if(out.stats[stat]!==undefined)continue;
-     const escaped=stat.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
-     const patterns=[
-       new RegExp(`(?:^|[^A-Z])${escaped}\\s*[：:=]?\\s*(-?\\d+(?:\\.\\d+)?)`,'i'),
-       new RegExp(`${escaped}[^\\d-]{0,12}(-?\\d+(?:\\.\\d+)?)`,'i')
-     ];
-     for(const re of patterns){
-       const m=line.match(re);if(m){out.stats[stat]=Number(m[1]);break;}
+     const aliases=STAT_ALIASES[stat]||[stat];
+     for(const alias of aliases){
+       const escaped=alias.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+       const patterns=[
+         new RegExp(`(?:^|[^A-Z])${escaped}\\s*[：:=]?\\s*(-?\\d+(?:\\.\\d+)?)`,'i'),
+         new RegExp(`${escaped}[^\\d-]{0,12}(-?\\d+(?:\\.\\d+)?)`,'i')
+       ];
+       let found=false;
+       for(const re of patterns){
+         const m=line.match(re);if(m){out.stats[stat]=Number(m[1]);found=true;break;}
+       }
+       if(found)break;
      }
    }
  }
