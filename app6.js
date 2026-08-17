@@ -1,0 +1,235 @@
+const BASE_KEYS=['STR','CON','POW','DEX','APP','SIZ','INT','EDU'];
+const INPUT_KEYS=[...BASE_KEYS,'SAN','HP','MP'];
+const RESULT_KEYS=[...BASE_KEYS,'SAN','HP','MP','IDEA','LUCK','KNOW'];
+const STAT_ALIASES={
+ STR:['STR','筋力'],CON:['CON','体力'],POW:['POW','精神力'],DEX:['DEX','敏捷性'],APP:['APP','外見'],SIZ:['SIZ','体格'],INT:['INT','知性'],EDU:['EDU','教育'],
+ SAN:['正気度','現在正気度','SAN','SAN値','正気度ポイント'],HP:['HP','耐久力','耐久'],MP:['MP','マジックポイント'],
+ IDEA:['IDEA','アイデア'],LUCK:['LUCK','幸運'],KNOW:['KNOW','知識']
+};
+const QUESTIONS=[
+ {q:'戦闘になったら？',a:[['先に殴る','atk'],['仲間を守る','tank'],['敵を観察する','control'],['戦闘を避ける','support']]},
+ {q:'仲間がピンチ。',a:[['危険でも助ける','support'],['敵を先に倒す','atk'],['最適解を探す','control'],['状況をひっくり返す','special']]},
+ {q:'探索で一番頼られるのは？',a:[['知識・推理','control'],['交渉','support'],['身体能力','atk'],['勘と奇策','special']]},
+ {q:'この探索者が卓にいると？',a:[['安定する','support'],['話が進む','control'],['戦闘が楽','atk'],['予想外が起きる','special']]},
+ {q:'弱点に近いものは？',a:[['打たれ弱い','glass'],['火力不足','support'],['遅い','tank'],['好奇心','special']]},
+ {q:'得意な勝ち方は？',a:[['正面突破','atk'],['準備と情報','control'],['連携','support'],['一発逆転','special']]},
+ {q:'高難度で任せたい仕事は？',a:[['削り切る','atk'],['耐える','tank'],['バフ・回復','support'],['ギミック処理','control']]},
+ {q:'ゲーム内での印象は？',a:[['分かりやすく強い','atk'],['地味だが必須','support'],['使いこなすと強い','control'],['唯一無二で変','special']]}
+];
+let uploadedData='';
+
+const statsGrid=document.querySelector('#statsGrid');
+INPUT_KEYS.forEach(k=>{
+ const label=document.createElement('label');
+ label.textContent=k;
+ const i=document.createElement('input');
+ i.type='number';i.id='stat_'+k;i.min='0';i.placeholder='—';
+ if(BASE_KEYS.includes(k))i.max='30';
+ else if(k==='SAN')i.max='99';
+ else i.max='999';
+ label.appendChild(i);statsGrid.appendChild(label);
+});
+
+const qWrap=document.querySelector('#questions');
+QUESTIONS.forEach((item,idx)=>{
+ const box=document.createElement('div');box.className='question';
+ box.innerHTML=`<p>Q${idx+1}. ${item.q}</p>`;
+ item.a.forEach(([text,val],ai)=>{
+   const l=document.createElement('label');
+   l.innerHTML=`<input type="radio" name="q${idx}" value="${val}" ${ai===0?'checked':''}> ${text}`;
+   box.appendChild(l);
+ });
+ qWrap.appendChild(box);
+});
+
+document.querySelector('#pcImage').addEventListener('change',e=>{
+ const f=e.target.files?.[0];if(!f)return;
+ const r=new FileReader();r.onload=()=>uploadedData=r.result;r.readAsDataURL(f);
+});
+
+const iacharaFile=document.querySelector('#iacharaFile');
+const importStatus=document.querySelector('#importStatus');
+iacharaFile.addEventListener('change',async e=>{
+ const file=e.target.files?.[0];if(!file)return;
+ importStatus.textContent='読み込み中…';importStatus.className='import-status';
+ try{
+   const text=await file.text();
+   const imported=parseIacharaFile(text,file.name);
+   assertSixthEdition(imported);
+   const applied=applyImportedCharacter(imported);
+   if(!applied.length)throw new Error('探索者データを認識できませんでした。');
+   importStatus.textContent=`6版データ読み込み完了：${applied.join(' / ')}`;
+   importStatus.className='import-status success';
+ }catch(err){
+   console.error(err);
+   importStatus.textContent=`読み込み失敗：${err.message}`;
+   importStatus.className='import-status error';
+ }
+});
+
+function normalizeLabel(value=''){
+ return String(value).trim().toUpperCase().replace(/[：:\s　_-]/g,'');
+}
+function statFromLabel(label=''){
+ const normalized=normalizeLabel(label);
+ for(const [stat,aliases] of Object.entries(STAT_ALIASES)){
+   if(aliases.some(a=>normalizeLabel(a)===normalized))return stat;
+ }
+ return null;
+}
+function numericValue(value){
+ if(value===null||value===undefined)return null;
+ if(typeof value==='number'&&Number.isFinite(value))return value;
+ const m=String(value).replace(/,/g,'').match(/-?\d+(?:\.\d+)?/);
+ return m?Number(m[0]):null;
+}
+function parseIacharaFile(text,fileName=''){
+ const trimmed=text.replace(/^\uFEFF/,'').trim();
+ if(!trimmed)throw new Error('ファイルが空です。');
+ if(fileName.toLowerCase().endsWith('.json')||/^[\[{]/.test(trimmed)){
+   try{return parseIacharaJson(JSON.parse(trimmed));}
+   catch(e){if(fileName.toLowerCase().endsWith('.json'))throw new Error('JSONを解析できませんでした。');}
+ }
+ return parseIacharaText(trimmed);
+}
+function parseIacharaJson(root){
+ const out={stats:{}};
+ const source=root?.data&&typeof root.data==='object'?root.data:root;
+ if(typeof source?.name==='string')out.name=source.name;
+ if(typeof source?.ruby==='string')out.nameEn=source.ruby;
+ if(typeof source?.characterName==='string'&&!out.name)out.name=source.characterName;
+ const visit=node=>{
+   if(!node||typeof node!=='object')return;
+   if(Array.isArray(node)){node.forEach(visit);return;}
+   const label=node.label??node.name??node.key??node.title;
+   const val=node.value??node.current??node.max??node.number;
+   if(label!==undefined){
+     const stat=statFromLabel(label),num=numericValue(val);
+     if(stat&&num!==null&&out.stats[stat]===undefined)out.stats[stat]=num;
+   }
+   for(const [k,v] of Object.entries(node)){
+     const stat=statFromLabel(k),num=numericValue(v);
+     if(stat&&num!==null&&out.stats[stat]===undefined)out.stats[stat]=num;
+     if((k==='name'||k==='characterName')&&typeof v==='string'&&!out.name)out.name=v;
+     if(typeof v==='object')visit(v);
+   }
+ };
+ visit(source);return out;
+}
+function parseIacharaText(text){
+ const out={stats:{}};
+ const lines=text.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
+ const namePatterns=[/^(?:探索者名|キャラクター名|名前|氏名)\s*[：:]\s*(.+)$/i,/^NAME\s*[：:]\s*(.+)$/i];
+ for(const line of lines){
+   if(!out.name){for(const re of namePatterns){const m=line.match(re);if(m){out.name=m[1].trim();break;}}}
+   for(const [stat,aliases] of Object.entries(STAT_ALIASES)){
+     if(out.stats[stat]!==undefined)continue;
+     for(const alias of aliases){
+       const escaped=alias.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+       const patterns=[new RegExp(`(?:^|[^A-Z])${escaped}\\s*[：:=]?\\s*(-?\\d+(?:\\.\\d+)?)`,'i'),new RegExp(`${escaped}[^\\d-]{0,12}(-?\\d+(?:\\.\\d+)?)`,'i')];
+       let found=false;
+       for(const re of patterns){const m=line.match(re);if(m){out.stats[stat]=Number(m[1]);found=true;break;}}
+       if(found)break;
+     }
+   }
+ }
+ if(!out.name){
+   const first=lines.find(line=>line.length<=40&&!BASE_KEYS.some(k=>new RegExp(`\\b${k}\\b`,'i').test(line))&&!/https?:\/\//i.test(line));
+   if(first&&!/[：:]/.test(first))out.name=first;
+ }
+ return out;
+}
+function assertSixthEdition(data){
+ const values=BASE_KEYS.map(k=>Number(data.stats?.[k])).filter(Number.isFinite);
+ if(values.some(v=>v>30))throw new Error('7版形式と思われる能力値を検出しました。現在の診断は6版専用です。');
+}
+function applyImportedCharacter(data){
+ const applied=[];
+ if(data.name){pcName.value=data.name;applied.push(`名前：${data.name}`);}
+ if(data.nameEn){pcNameEn.value=data.nameEn;applied.push('英字名');}
+ const filled=[];
+ for(const stat of INPUT_KEYS){
+   const value=data.stats?.[stat];
+   if(value===undefined||value===null||value==='')continue;
+   document.querySelector('#stat_'+stat).value=value;filled.push(stat);
+ }
+ if(filled.length)applied.push(`能力値 ${filled.join(', ')}`);
+ return applied;
+}
+function answers(){return QUESTIONS.map((_,i)=>document.querySelector(`input[name=q${i}]:checked`)?.value||'control');}
+function scoreAnswers(vals){const s={atk:0,tank:0,support:0,control:0,special:0,glass:0};vals.forEach(v=>s[v]=(s[v]||0)+1);return s;}
+function rawInput(){const o={};INPUT_KEYS.forEach(k=>o[k]=document.querySelector('#stat_'+k).value);return o;}
+function deriveSixth(raw){
+ const st={};
+ INPUT_KEYS.forEach(k=>st[k]=raw[k]!==''?raw[k]:'—');
+ const con=Number(raw.CON),siz=Number(raw.SIZ),pow=Number(raw.POW),intv=Number(raw.INT),edu=Number(raw.EDU);
+ if(raw.HP===''&&Number.isFinite(con)&&Number.isFinite(siz))st.HP=Math.ceil((con+siz)/2);
+ if(raw.MP===''&&Number.isFinite(pow))st.MP=pow;
+ st.IDEA=Number.isFinite(intv)?intv*5:'—';
+ st.LUCK=Number.isFinite(pow)?pow*5:'—';
+ st.KNOW=Number.isFinite(edu)?edu*5:'—';
+ return st;
+}
+function normalized(st,key){const v=Number(st[key]);return Number.isFinite(v)?v*5:0;}
+function validateSixth(raw){
+ for(const k of BASE_KEYS){
+   const v=Number(raw[k]);
+   if(raw[k]!==''&&(v<1||v>30))return `${k}=${raw[k]} は6版の通常スケールとして扱えません。`;
+ }
+ return '';
+}
+function roleFrom(s){
+ if(s.control>=Math.max(s.atk,s.support,s.tank))return ['ANALYST','BACKLINE'];
+ if(s.support>=Math.max(s.atk,s.tank))return ['SUPPORTER','BACKLINE'];
+ if(s.tank>s.atk)return ['GUARDIAN','FRONTLINE'];
+ return ['STRIKER','FRONTLINE'];
+}
+function attributeFrom(s,st){
+ if(s.special>=3)return 'ANOMALY';
+ const pow=normalized(st,'POW'),app=normalized(st,'APP'),intv=normalized(st,'INT'),str=normalized(st,'STR');
+ if(pow>=75)return 'ARCANE';if(intv>=75)return 'LOGIC';if(app>=75)return 'CHARM';if(str>=75)return 'IMPACT';return 'VOID';
+}
+function rarityFrom(s,st){
+ const nums=BASE_KEYS.map(k=>normalized(st,k)).filter(v=>v>0);
+ const avg=nums.length?nums.reduce((a,b)=>a+b,0)/nums.length:50;
+ if(s.special>=3||avg>=75)return ['★★★★★★','LIMITED'];
+ if(avg>=60)return ['★★★★★','STANDARD'];
+ return ['★★★★','STANDARD'];
+}
+function tagsFrom(s,role){
+ const tags=[];
+ if(role==='ANALYST')tags.push('ANALYSIS');if(role==='SUPPORTER')tags.push('SUPPORT');if(role==='GUARDIAN')tags.push('DEFENSE');if(role==='STRIKER')tags.push('DAMAGE');
+ if(s.control>=2)tags.push('CONTROL');if(s.special>=2)tags.push('SPECIAL');if(s.atk>=2)tags.push('BURST');if(s.support>=2)tags.push('UTILITY');
+ return [...new Set(tags)].slice(0,3);
+}
+function skillSet(role){
+ const map={
+ ANALYST:['《まだ結論を出すには早い》','対象を解析し、防御・抵抗を低下。情報獲得時に追加効果。','《全部つながった》','敵全体を解析し、味方全体の弱点攻撃とギミック処理効率を強化。'],
+ SUPPORTER:['《ここは任せて》','味方単体の不利状態を軽減し、行動効率を上昇。','《全員、まだ動ける》','味方全体を立て直し、一定時間支援効果を増幅。'],
+ GUARDIAN:['《ここから先は通さない》','自身に防御強化と挑発を付与。','《まだ倒れる時間じゃない》','味方全体への被害を肩代わりし、耐久性能を大幅強化。'],
+ STRIKER:['《先に終わらせる》','敵単体へ高威力攻撃。条件達成で追撃。','《これで終わり》','蓄積した有利効果を消費し、敵単体へ極大ダメージ。']};
+ return map[role];
+}
+function ratings(s){
+ const hi=(s.control+s.support>=3)?'S':s.control>=2?'A':'B';
+ return {高難度:hi,周回:s.atk>=3?'S':s.atk>=2?'A':'B',AUTO:s.special>=3?'C':s.control>=3?'B':'A',初心者:s.special>=3?'C':s.control>=3?'B':'A'};
+}
+function render(){
+ const raw=rawInput(),error=validateSixth(raw);if(error){alert(error);return;}
+ const st=deriveSixth(raw),s=scoreAnswers(answers()),[role,pos]=roleFrom(s),attr=attributeFrom(s,st),[stars,banner]=rarityFrom(s,st),tags=tagsFrom(s,role),skills=skillSet(role),rates=ratings(s);
+ const name=pcName.value.trim()||'無名の探索者';const en=pcNameEn.value.trim()||name.toUpperCase();
+ resultName.textContent=name;resultNameEn.textContent=en;roleText.textContent=role;positionText.textContent=pos;attributeText.textContent=attr;tagsText.textContent=tags.join(' / ');rarityLine.textContent=`${stars} ${banner} // ${role} // COC6`;bgWord.textContent=role;
+ resultStats.innerHTML='';RESULT_KEYS.forEach(k=>{const d=document.createElement('div');d.innerHTML=`<span>${k}</span><strong>${st[k]}</strong>`;resultStats.appendChild(d);});
+ ratings.innerHTML='';Object.entries(rates).forEach(([k,v])=>{const d=document.createElement('div');d.className='rating-row';d.innerHTML=`<span>${k}</span><strong>${v}</strong>`;ratings.appendChild(d);});
+ skillName.textContent=skills[0];skillText.textContent=skills[1];ultimateName.textContent=skills[2];ultimateText.textContent=skills[3];
+ historyText.innerHTML=`<div class="history-line"><b>VER 1.0</b><span>${stars} ${role}として実装</span></div><div class="history-line"><b>VER 1.1</b><span>${tags[0]||'SPECIAL'}系ギミック対応</span></div><div class="history-line"><b>CURRENT</b><span>${rates.高難度==='S'?'高難度環境で採用率上昇':'特定編成で継続運用'}</span></div>`;
+ if(uploadedData){resultImage.src=uploadedData;resultImage.style.display='block';imagePlaceholder.hidden=true;}else{resultImage.style.display='none';imagePlaceholder.hidden=false;}
+ inputPanel.hidden=true;resultWrap.hidden=false;window.scrollTo({top:0,behavior:'smooth'});
+}
+diagnoseBtn.addEventListener('click',render);
+backBtn.addEventListener('click',()=>{resultWrap.hidden=true;inputPanel.hidden=false;});
+downloadBtn.addEventListener('click',async()=>{
+ const card=document.querySelector('#resultCard');if(!window.html2canvas){alert('画像生成ライブラリの読み込みに失敗しました。');return;}
+ const canvas=await html2canvas(card,{scale:2,backgroundColor:'#f5f7f5',useCORS:true});
+ const a=document.createElement('a');a.download=`coc6-gacha-${(pcName.value||'result').replace(/\s+/g,'-')}.png`;a.href=canvas.toDataURL('image/png');a.click();
+});
