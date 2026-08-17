@@ -1,0 +1,68 @@
+/* v0.7.14 - right-edge identity metadata + lower profile stack */
+
+/* Give the right identity area a little more room, but keep it outside the ring. */
+html[data-visual-theme="zzz"] .name-block{
+  right:1.3%!important;
+  width:30%!important;
+  max-width:30%!important;
+}
+
+/* English name and occupation are secondary identity data: pin them to the far right. */
+html[data-visual-theme="zzz"] #resultNameEn{
+  display:block!important;
+  width:58%!important;
+  max-width:58%!important;
+  margin:7px 0 0 auto!important;
+  text-align:right!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+html[data-visual-theme="zzz"] .result-occupation{
+  display:block!important;
+  width:max-content!important;
+  max-width:58%!important;
+  margin:5px 0 0 auto!important;
+  text-align:right!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+
+/* BUILD gets its own row below the English name / occupation and never sits under PROFILE. */
+html[data-visual-theme="zzz"] .name-block .urban-stickers{
+  position:relative!important;
+  inset:auto!important;
+  display:flex!important;
+  justify-content:flex-end!important;
+  align-items:center!important;
+  flex-wrap:nowrap!important;
+  gap:5px!important;
+  width:58%!important;
+  max-width:58%!important;
+  margin:7px 0 0 auto!important;
+  padding:0!important;
+  z-index:20!important;
+}
+html[data-visual-theme="zzz"] .name-block .urban-stickers span{
+  flex:0 1 auto!important;
+  max-width:none!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+
+/* Move the personal-information stack down so BUILD remains completely visible. */
+html[data-visual-theme="zzz"] .investigator-info{
+  right:1.2%!important;
+  width:18.5%!important;
+  top:47%!important;
+  height:25%!important;
+  gap:4px!important;
+}
+html[data-visual-theme="zzz"] .rating-block{
+  right:1.2%!important;
+  width:16.8%!important;
+  top:73%!important;
+  bottom:auto!important;
+}
