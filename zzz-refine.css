@@ -1,0 +1,42 @@
+/* v0.6.2 - URBAN / ACTION refinement layer */
+html[data-visual-theme="zzz"] .name-block{right:4%;top:10.5%;width:22%;}
+html[data-visual-theme="zzz"] .name-block .mini-label{font-size:9px;padding:4px 7px;letter-spacing:.13em;}
+html[data-visual-theme="zzz"] .name-block h2{display:block;width:max-content;max-width:100%;font-size:clamp(26px,2.7vw,44px)!important;line-height:.9;padding:6px 10px 7px;margin-top:4px;box-shadow:4px 4px 0 var(--accent);white-space:normal;overflow-wrap:anywhere;}
+html[data-visual-theme="zzz"] .name-block>p:last-child{display:block;width:max-content;max-width:100%;font:900 9px/1.2 monospace;padding:3px 6px;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+html[data-visual-theme="zzz"] .urban-stickers{right:4.2%;top:22.4%;width:22%;gap:4px;}
+html[data-visual-theme="zzz"] .urban-stickers span{font-size:8px;padding:3px 6px;box-shadow:2px 2px 0 var(--urban-yellow);}
+html[data-visual-theme="zzz"] .urban-stickers span:nth-child(2){box-shadow:2px 2px 0 #111}
+html[data-visual-theme="zzz"] .urban-stickers span:nth-child(3){box-shadow:2px 2px 0 var(--accent)}
+
+/* Ring behaves as a HUD rather than a solid graphic mass. */
+html[data-visual-theme="zzz"] .spectrum-overlay{opacity:.84;filter:drop-shadow(4px 6px 0 rgba(0,0,0,.08));}
+
+/* Right-side modules: regular vertical rhythm and a little more breathing room. */
+html[data-visual-theme="zzz"] .coc-block{right:4%;top:47%;width:22.5%;padding:9px 10px;box-shadow:3px 3px 0 #111;}
+html[data-visual-theme="zzz"] .rating-block{right:4%;top:68.5%;width:22.5%;padding:9px 10px;box-shadow:3px 3px 0 #111;}
+html[data-visual-theme="zzz"] .coc-block .mini-label,html[data-visual-theme="zzz"] .rating-block .mini-label{padding:3px 6px;font-size:9px;letter-spacing:.08em;}
+html[data-visual-theme="zzz"] .result-stats{gap:1px 6px;font-size:8px;}
+html[data-visual-theme="zzz"] .result-stats div{padding:2px 0;}
+html[data-visual-theme="zzz"] .rating-row{padding:3px 0;font-size:9px;}
+html[data-visual-theme="zzz"] .rating-row strong{min-width:23px;font-size:13px;}
+
+/* Keep skill modules compact without changing their placement relative to the movable character. */
+html[data-visual-theme="zzz"] .skill-block{gap:7px;}
+html[data-visual-theme="zzz"] .skill-block>p.mini-label{padding:3px 7px;font-size:9px;}
+html[data-visual-theme="zzz"] .skill-block>h3{padding:8px 10px 3px;font-size:16px;line-height:1.1;}
+html[data-visual-theme="zzz"] .skill-block>p:not(.mini-label){padding:2px 10px 8px;min-height:34px;font-size:9px;line-height:1.45;}
+html[data-visual-theme="zzz"] .ultimate .mini-label{margin:7px 0 2px 9px;padding:3px 6px;font-size:9px;}
+html[data-visual-theme="zzz"] .ultimate h3{margin:2px 9px 3px;font-size:16px;line-height:1.1;}
+html[data-visual-theme="zzz"] .ultimate>p:last-child{margin:0 9px 8px;font-size:9px;line-height:1.45;}
+html[data-visual-theme="zzz"] .ultimate:after{font-size:7px;right:7px;top:7px;}
+
+/* Slightly tighter implementation module so the lower row reads as one system. */
+html[data-visual-theme="zzz"] .history-block{padding:9px 10px;box-shadow:3px 3px 0 var(--urban-yellow);}
+html[data-visual-theme="zzz"] .history-block .mini-label{padding:3px 6px;font-size:9px;}
+html[data-visual-theme="zzz"] .history-line{padding:3px 0;font-size:9px;}
+
+@media(max-width:800px){
+  html[data-visual-theme="zzz"] .name-block{width:23%;}
+  html[data-visual-theme="zzz"] .urban-stickers{width:23%;}
+  html[data-visual-theme="zzz"] .coc-block,html[data-visual-theme="zzz"] .rating-block{width:23%;}
+}
