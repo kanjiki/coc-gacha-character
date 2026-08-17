@@ -1,0 +1,49 @@
+/* v0.7.7 - fixed 1366x768 result canvas
+   The result card is treated like a game UI canvas, not a responsive page. */
+
+html[data-visual-theme="zzz"] .result-wrap{
+  overflow-x:auto!important;
+  overflow-y:visible!important;
+  -webkit-overflow-scrolling:touch;
+}
+
+html[data-visual-theme="zzz"] #resultCard,
+html[data-visual-theme="zzz"] .result-card{
+  width:1366px!important;
+  min-width:1366px!important;
+  max-width:1366px!important;
+  height:768px!important;
+  min-height:768px!important;
+  max-height:768px!important;
+  aspect-ratio:auto!important;
+  flex:0 0 1366px!important;
+}
+
+/* Remove viewport-dependent typography from the fixed canvas. */
+html[data-visual-theme="zzz"] .name-block h2{
+  font-size:52px!important;
+  line-height:.88!important;
+}
+html[data-visual-theme="zzz"] .huge-word{
+  font-size:86px!important;
+  line-height:.76!important;
+}
+
+/* Keep all major modules at the desktop coordinates even on a narrow browser. */
+@media(max-width:800px){
+  html[data-visual-theme="zzz"] #resultCard,
+  html[data-visual-theme="zzz"] .result-card{
+    width:1366px!important;
+    min-width:1366px!important;
+    max-width:1366px!important;
+    height:768px!important;
+    min-height:768px!important;
+    max-height:768px!important;
+  }
+  html[data-visual-theme="zzz"] .name-block{right:4%!important;top:10.5%!important;width:24%!important;}
+  html[data-visual-theme="zzz"] .investigator-info{right:3.8%!important;top:38.5%!important;width:24.2%!important;height:28.5%!important;}
+  html[data-visual-theme="zzz"] .rating-block{right:4%!important;top:68.2%!important;bottom:auto!important;width:20%!important;}
+  html[data-visual-theme="zzz"] .skill-block{left:31%!important;bottom:2.2%!important;top:auto!important;width:42.5%!important;}
+  html[data-visual-theme="zzz"] .huge-word{left:3.8%!important;top:50.5%!important;width:27%!important;max-width:27%!important;font-size:86px!important;}
+  html[data-visual-theme="zzz"] .profile-block{left:4%!important;top:14%!important;width:22%!important;}
+}
