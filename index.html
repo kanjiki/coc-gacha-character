@@ -4,35 +4,35 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#f4f6f4">
-  <title>あなたの探索者がソシャゲに実装されたら？</title>
-  <link rel="stylesheet" href="styles.css?v=0.2.3">
+  <title>あなたの探索者がソシャゲに実装されたら？｜CoC6版</title>
+  <link rel="stylesheet" href="styles.css?v=0.3.0">
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
-  <script src="app.js?v=0.2.3" defer></script>
+  <script src="app6.js?v=0.3.0" defer></script>
 </head>
 <body>
   <main class="shell">
     <header class="hero">
       <div class="version-row">
-        <p class="eyebrow">TRPG LAB // CHARACTER IMPLEMENTATION TEST</p>
-        <span class="version-badge">v0.2.3 // 2026-08-18</span>
+        <p class="eyebrow">TRPG LAB // CHARACTER IMPLEMENTATION TEST // COC6</p>
+        <span class="version-badge">v0.3.0 // 6版専用 // 2026-08-18</span>
       </div>
       <h1>あなたの探索者が<br>ソシャゲに実装されたら？</h1>
-      <p>CoCの能力値と探索者の行動傾向から、架空ソシャゲでの実装性能を生成します。</p>
+      <p>クトゥルフ神話TRPG 6版の能力値と探索者の行動傾向から、架空ソシャゲでの実装性能を生成します。</p>
     </header>
 
     <section class="panel input-panel" id="inputPanel">
-      <div class="section-title"><span>01</span><h2>探索者データ</h2></div>
+      <div class="section-title"><span>01</span><h2>探索者データ｜CoC6版</h2></div>
 
       <div class="import-box" id="iacharaImportBox">
         <div>
-          <strong>いあきゃらから読み込む</strong>
-          <p>「出力 → ファイルに出力」のテキストファイル、またはココフォリア向け駒出力JSONに対応。ファイルは端末内だけで解析します。</p>
+          <strong>いあきゃらから6版探索者を読み込む</strong>
+          <p>「出力 → ファイルに出力」のテキストファイル、またはココフォリア向け駒出力JSONに対応。SANは「正気度」を優先して読み取ります。ファイルは端末内だけで解析します。</p>
         </div>
         <label class="file-import">キャラ出力ファイル
           <input id="iacharaFile" type="file" accept=".txt,.json,text/plain,application/json">
           <span>いあきゃらファイルを選択</span>
         </label>
-        <div id="importStatus" class="import-status" aria-live="polite">対応形式：.txt / .json</div>
+        <div id="importStatus" class="import-status" aria-live="polite">6版専用 / 対応形式：.txt / .json</div>
       </div>
 
       <div class="identity-grid">
@@ -61,7 +61,7 @@
 
         <div class="topline">
           <span id="rarityLine">★★★★★★ LIMITED</span>
-          <span>TRPG LAB // OPERATOR FILE</span>
+          <span>TRPG LAB // OPERATOR FILE // COC6</span>
         </div>
 
         <aside class="profile-block">
@@ -81,13 +81,13 @@
         </div>
 
         <section class="name-block">
-          <p class="mini-label">CHARACTER</p>
+          <p class="mini-label">CHARACTER // COC6</p>
           <h2 id="resultName">NAME</h2>
           <p id="resultNameEn">CHARACTER NAME</p>
         </section>
 
         <section class="coc-block">
-          <p class="mini-label">COC CHARACTERISTICS</p>
+          <p class="mini-label">COC6 CHARACTERISTICS</p>
           <div id="resultStats" class="result-stats"></div>
         </section>
 
@@ -113,8 +113,8 @@
         </section>
 
         <footer>
-          <span>あなたの探索者がソシャゲに実装されたら？</span>
-          <span>TRPG LAB // v0.2.3</span>
+          <span>あなたの探索者がソシャゲに実装されたら？ // CoC6版</span>
+          <span>TRPG LAB // v0.3.0</span>
         </footer>
       </article>
     </section>
