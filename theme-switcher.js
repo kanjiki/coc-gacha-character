@@ -4,7 +4,7 @@
   const input=$('#visualTheme');
   const result=$('#resultVisualTheme');
   const badge=$('.version-badge');
-  const THEMES={persona:{href:'persona-theme.css?v=0.6.6',label:'COMIC / PHANTOM'},zzz:{href:'zzz-theme-v066.css?v=0.6.6',label:'URBAN / ACTION'}};
+  const THEMES={persona:{href:'persona-theme.css?v=0.6.7',label:'COMIC / PHANTOM'},zzz:{href:'zzz-theme-v067.css?v=0.6.7',label:'URBAN / ACTION'}};
   function applyTheme(name){
     if(!THEMES[name])name='persona';
     const t=THEMES[name];
@@ -13,7 +13,7 @@
     if(result)result.value=name;
     document.documentElement.dataset.visualTheme=name;
     localStorage.setItem('coc-gacha-visual-theme',name);
-    if(badge)badge.textContent=`v0.6.6 // ${t.label} // 2026-08-18`;
+    if(badge)badge.textContent=`v0.6.7 // ${t.label} // 2026-08-18`;
     document.dispatchEvent(new CustomEvent('gacha-visual-theme-change',{detail:{theme:name}}));
   }
   input?.addEventListener('change',()=>applyTheme(input.value));
