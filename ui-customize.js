@@ -55,7 +55,7 @@
   stage?.addEventListener('pointermove',e=>{
     if(!drag||drag.id!==e.pointerId)return;
     imageState.x=Math.max(-320,Math.min(320,drag.originX+(e.clientX-drag.startX)*drag.ratio));
-    imageState.y=Math.max(-240,Math.min(240,drag.originY+(e.clientY-drag.startY)*drag.ratio));
+    imageState.y=Math.max(-280,Math.min(460,drag.originY+(e.clientY-drag.startY)*drag.ratio));
     applyImage();
   });
   function end(e){if(!drag||drag.id!==e.pointerId)return;stage?.classList.remove('is-dragging');drag=null;}
