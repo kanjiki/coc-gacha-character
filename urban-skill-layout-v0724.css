@@ -1,0 +1,52 @@
+/* v0.7.24 - wider SKILL / ULTIMATE beside GAME RATING */
+
+html[data-visual-theme="zzz"] .skill-block{
+  left:28.5%!important;
+  width:49.5%!important;
+  bottom:2.2%!important;
+  top:auto!important;
+  display:block!important;
+  overflow:visible!important;
+}
+
+html[data-visual-theme="zzz"] .skill-primary{
+  width:100%!important;
+  min-height:118px!important;
+  margin:0!important;
+}
+
+html[data-visual-theme="zzz"] .skill-primary h3,
+html[data-visual-theme="zzz"] .ultimate h3{
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+
+/* Pull ULTIMATE out to the right so it sits next to GAME RATING. */
+html[data-visual-theme="zzz"] .skill-block .ultimate{
+  position:absolute!important;
+  left:calc(100% + 10px)!important;
+  bottom:0!important;
+  width:38%!important;
+  min-width:0!important;
+  min-height:118px!important;
+  margin:0!important;
+  z-index:24!important;
+}
+
+/* Keep GAME RATING compact and leave a clear gutter beside ULTIMATE. */
+html[data-visual-theme="zzz"] .rating-block{
+  right:1.2%!important;
+  width:16.8%!important;
+}
+
+@media(max-width:800px){
+  html[data-visual-theme="zzz"] .skill-block{
+    left:28.5%!important;
+    width:49.5%!important;
+  }
+  html[data-visual-theme="zzz"] .skill-block .ultimate{
+    left:calc(100% + 10px)!important;
+    width:38%!important;
+  }
+}
