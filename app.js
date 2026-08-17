@@ -14,7 +14,7 @@ let uploadedData='';
 const statsGrid=document.querySelector('#statsGrid');
 STAT_KEYS.forEach(k=>{
  const label=document.createElement('label');label.textContent=k;
- const i=document.createElement('input');i.type='number';i.id='stat_'+k;i.min='0';i.max=k==='MOV'?20:99;i.placeholder='—';
+ const i=document.createElement('input');i.type='number';i.id='stat_'+k;i.min='0';i.max=k==='MOV'?20:999;i.placeholder='—';
  label.appendChild(i);statsGrid.appendChild(label);
 });
 
@@ -34,6 +34,120 @@ document.querySelector('#pcImage').addEventListener('change',e=>{
  const f=e.target.files?.[0]; if(!f)return;
  const r=new FileReader();r.onload=()=>uploadedData=r.result;r.readAsDataURL(f);
 });
+
+const iacharaFile=document.querySelector('#iacharaFile');
+const importStatus=document.querySelector('#importStatus');
+iacharaFile.addEventListener('change',async e=>{
+ const file=e.target.files?.[0];
+ if(!file)return;
+ importStatus.textContent='読み込み中…';
+ importStatus.className='import-status';
+ try{
+   const text=await file.text();
+   const imported=parseIacharaFile(text,file.name);
+   const applied=applyImportedCharacter(imported);
+   if(!applied.length) throw new Error('探索者データを認識できませんでした。');
+   importStatus.textContent=`読み込み完了：${applied.join(' / ')}`;
+   importStatus.className='import-status success';
+ }catch(err){
+   console.error(err);
+   importStatus.textContent=`読み込み失敗：${err.message} 手入力はそのまま利用できます。`;
+   importStatus.className='import-status error';
+ }
+});
+
+function normalizeLabel(value=''){
+ return String(value).trim().toUpperCase().replace(/[：:：\s　_-]/g,'');
+}
+function numericValue(value){
+ if(value===null||value===undefined)return null;
+ if(typeof value==='number'&&Number.isFinite(value))return value;
+ const m=String(value).replace(/,/g,'').match(/-?\d+(?:\.\d+)?/);
+ return m?Number(m[0]):null;
+}
+function parseIacharaFile(text,fileName=''){
+ const trimmed=text.replace(/^\uFEFF/,'').trim();
+ if(!trimmed)throw new Error('ファイルが空です。');
+ if(fileName.toLowerCase().endsWith('.json')||/^[\[{]/.test(trimmed)){
+   try{return parseIacharaJson(JSON.parse(trimmed));}catch(e){
+     if(fileName.toLowerCase().endsWith('.json'))throw new Error('JSONを解析できませんでした。');
+   }
+ }
+ return parseIacharaText(trimmed);
+}
+function parseIacharaJson(root){
+ const out={stats:{}};
+ const source=root?.data&&typeof root.data==='object'?root.data:root;
+ if(typeof source?.name==='string')out.name=source.name;
+ if(typeof source?.ruby==='string')out.nameEn=source.ruby;
+ if(typeof source?.characterName==='string'&&!out.name)out.name=source.characterName;
+
+ const visit=node=>{
+   if(!node||typeof node!=='object')return;
+   if(Array.isArray(node)){node.forEach(visit);return;}
+   const label=node.label??node.name??node.key??node.title;
+   const val=node.value??node.current??node.max??node.number;
+   if(label!==undefined){
+     const key=normalizeLabel(label);
+     const stat=STAT_KEYS.find(k=>normalizeLabel(k)===key);
+     const num=numericValue(val);
+     if(stat&&num!==null&&out.stats[stat]===undefined)out.stats[stat]=num;
+   }
+   for(const [k,v] of Object.entries(node)){
+     const key=normalizeLabel(k);
+     const stat=STAT_KEYS.find(s=>normalizeLabel(s)===key);
+     const num=numericValue(v);
+     if(stat&&num!==null&&out.stats[stat]===undefined)out.stats[stat]=num;
+     if((k==='name'||k==='characterName')&&typeof v==='string'&&!out.name)out.name=v;
+     if(typeof v==='object')visit(v);
+   }
+ };
+ visit(source);
+ return out;
+}
+function parseIacharaText(text){
+ const out={stats:{}};
+ const lines=text.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
+ const namePatterns=[
+   /^(?:探索者名|キャラクター名|名前|氏名)\s*[：:]\s*(.+)$/i,
+   /^NAME\s*[：:]\s*(.+)$/i
+ ];
+ for(const line of lines){
+   if(!out.name){
+     for(const re of namePatterns){const m=line.match(re);if(m){out.name=m[1].trim();break;}}
+   }
+   for(const stat of STAT_KEYS){
+     if(out.stats[stat]!==undefined)continue;
+     const escaped=stat.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+     const patterns=[
+       new RegExp(`(?:^|[^A-Z])${escaped}\\s*[：:=]?\\s*(-?\\d+(?:\\.\\d+)?)`,'i'),
+       new RegExp(`${escaped}[^\\d-]{0,12}(-?\\d+(?:\\.\\d+)?)`,'i')
+     ];
+     for(const re of patterns){
+       const m=line.match(re);if(m){out.stats[stat]=Number(m[1]);break;}
+     }
+   }
+ }
+ if(!out.name){
+   const first=lines.find(line=>line.length<=40&&!STAT_KEYS.some(k=>new RegExp(`\\b${k}\\b`,'i').test(line))&&!/https?:\/\//i.test(line));
+   if(first&&!/[：:]/.test(first))out.name=first;
+ }
+ return out;
+}
+function applyImportedCharacter(data){
+ const applied=[];
+ if(data.name){document.querySelector('#pcName').value=data.name;applied.push(`名前：${data.name}`)}
+ if(data.nameEn){document.querySelector('#pcNameEn').value=data.nameEn;applied.push('英字名')}
+ const filled=[];
+ for(const stat of STAT_KEYS){
+   const value=data.stats?.[stat];
+   if(value===undefined||value===null||value==='')continue;
+   document.querySelector('#stat_'+stat).value=value;
+   filled.push(stat);
+ }
+ if(filled.length)applied.push(`能力値 ${filled.join(', ')}`);
+ return applied;
+}
 
 function answers(){return QUESTIONS.map((_,i)=>document.querySelector(`input[name=q${i}]:checked`)?.value||'control')}
 function scoreAnswers(vals){const s={atk:0,tank:0,support:0,control:0,special:0,glass:0};vals.forEach(v=>s[v]=(s[v]||0)+1);return s}
