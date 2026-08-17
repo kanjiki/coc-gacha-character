@@ -4,7 +4,7 @@
   const input=$('#visualTheme');
   const result=$('#resultVisualTheme');
   const badge=$('.version-badge');
-  const THEMES={persona:{href:'persona-theme.css?v=0.6.3',label:'COMIC / PHANTOM'},zzz:{href:'zzz-theme-v062.css?v=0.6.3',label:'URBAN / ACTION'}};
+  const THEMES={persona:{href:'persona-theme.css?v=0.6.3',label:'COMIC / PHANTOM'},zzz:{href:'zzz-theme-v063.css?v=0.6.3',label:'URBAN / ACTION'}};
   function applyTheme(name){
     if(!THEMES[name])name='persona';
     const t=THEMES[name];
