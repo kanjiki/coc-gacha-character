@@ -1,0 +1,35 @@
+/* v0.7.4 - raise right-side investigator information stack */
+
+/* Pull the personal-information cluster upward so the eye flows
+   CHARACTER -> occupation/build -> profile/scenarios/memo -> rating. */
+html[data-visual-theme="zzz"] .investigator-info{
+  top:34.5%!important;
+  height:35%!important;
+  gap:6px!important;
+}
+html[data-visual-theme="zzz"] .investigator-info .info-section{
+  padding:7px 9px!important;
+}
+
+/* Rating belongs to the same right-side information column, not the footer. */
+html[data-visual-theme="zzz"] .rating-block{
+  top:71%!important;
+  bottom:auto!important;
+  width:20%!important;
+}
+
+/* Slightly tighten the upper identity stack so metadata can begin sooner. */
+html[data-visual-theme="zzz"] .name-block{
+  top:9.2%!important;
+}
+html[data-visual-theme="zzz"] .name-block .urban-stickers{
+  margin-top:2px!important;
+}
+html[data-visual-theme="zzz"] .result-occupation{
+  margin-top:1px!important;
+}
+
+@media(max-width:800px){
+  html[data-visual-theme="zzz"] .investigator-info{top:35%!important;height:34%!important}
+  html[data-visual-theme="zzz"] .rating-block{top:71.5%!important}
+}
