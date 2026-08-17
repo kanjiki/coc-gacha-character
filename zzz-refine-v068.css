@@ -1,0 +1,44 @@
+/* v0.6.8 - favorite-skill privacy + ultimate emphasis + role ribbon routing */
+
+/* ROLE ribbon: keep it out of the investigator and ring center. */
+html[data-visual-theme="zzz"] .huge-word{
+  left:7.5%!important;
+  top:52%!important;
+  width:34%!important;
+  max-width:34%!important;
+  font-size:clamp(48px,5.6vw,88px)!important;
+  transform:rotate(-8deg) skewX(-12deg)!important;
+  transform-origin:left center!important;
+  z-index:2!important;
+}
+html[data-visual-theme="zzz"] .profile-block:after{left:58%!important;bottom:-28px!important;width:112px!important;}
+
+/* Ultimate is the hero module. */
+html[data-visual-theme="zzz"] .skill-block{
+  left:30%!important;
+  bottom:4.6%!important;
+  width:43.5%!important;
+  grid-template-columns:.78fr 1.22fr!important;
+  gap:10px!important;
+  align-items:stretch!important;
+}
+html[data-visual-theme="zzz"] .skill-primary{min-height:116px!important;}
+html[data-visual-theme="zzz"] .skill-primary>h3{font-size:15px!important;line-height:1.15!important;}
+html[data-visual-theme="zzz"] .skill-primary>p:last-child{font-size:8.6px!important;line-height:1.45!important;min-height:54px!important;}
+html[data-visual-theme="zzz"] .ultimate{
+  min-height:142px!important;
+  padding-bottom:8px!important;
+  box-shadow:7px 7px 0 rgba(0,0,0,.20)!important;
+}
+html[data-visual-theme="zzz"] .ultimate .mini-label{font-size:10px!important;padding:4px 8px!important;}
+html[data-visual-theme="zzz"] .ultimate h3{font-size:19px!important;line-height:1.08!important;margin-top:6px!important;}
+html[data-visual-theme="zzz"] .ultimate>p:last-child{font-size:9.2px!important;line-height:1.52!important;margin-top:7px!important;}
+html[data-visual-theme="zzz"] .ultimate:after{font-size:7.5px!important;letter-spacing:.12em!important;}
+
+/* Result history intentionally does not expose automatically detected skills. */
+html[data-visual-theme="zzz"] .history-block{min-height:91px!important;}
+
+@media(max-width:800px){
+  html[data-visual-theme="zzz"] .huge-word{left:8%!important;top:53%!important;width:35%!important;max-width:35%!important;font-size:64px!important;}
+  html[data-visual-theme="zzz"] .skill-block{grid-template-columns:.8fr 1.2fr!important;}
+}
