@@ -23,9 +23,34 @@
       }
     });
     c.strokeStyle=rgba(theme.rgb,urban?.88:.50);c.lineWidth=urban?2.1:1.4;c.beginPath();c.arc(cx,cy,innerR-12,0,Math.PI*2);c.stroke();
-    const labelR=181;c.fillStyle=theme.dark||'#1f7772';c.font=`${urban?900:800} 11px monospace`;c.textAlign='center';c.textBaseline='middle';
+
+    const labelR=181;
+    c.fillStyle=urban?'#ffffff':(theme.dark||'#1f7772');
+    c.font=`${urban?900:800} 11px monospace`;
+    c.textAlign='center';c.textBaseline='middle';
+    if(urban){c.shadowColor='rgba(0,0,0,.72)';c.shadowBlur=3;}
     BASE.forEach((key,i)=>{const a=start+(i+.5)*sectorSize;c.fillText(key,cx+Math.cos(a)*labelR,cy+Math.sin(a)*labelR);});
-    c.fillStyle=theme.dark||'#1f7772';c.font='700 10px monospace';c.fillText('SAN',cx,cy-10);c.fillStyle='#151817';c.font='900 27px monospace';c.fillText($('#stat_SAN')?.value||'—',cx,cy+14);
+    c.shadowBlur=0;
+
+    const san=$('#stat_SAN')?.value||'—';
+    if(urban){
+      c.fillStyle='rgba(255,255,255,.78)';
+      c.font='900 10px monospace';
+      c.fillText('SAN',cx,cy-22);
+      c.save();
+      c.translate(cx,cy+12);
+      c.transform(1,0,-0.16,1,0,0);
+      c.fillStyle='#ffffff';
+      c.strokeStyle='rgba(0,0,0,.72)';
+      c.lineWidth=3;
+      c.font='italic 1000 46px Arial Black, sans-serif';
+      c.strokeText(san,0,0);
+      c.fillText(san,0,0);
+      c.restore();
+    }else{
+      c.fillStyle=theme.dark||'#1f7772';c.font='700 10px monospace';c.fillText('SAN',cx,cy-10);
+      c.fillStyle='#151817';c.font='900 27px monospace';c.fillText(san,cx,cy+14);
+    }
   }
   document.addEventListener('DOMContentLoaded',()=>{$('#diagnoseBtn')?.addEventListener('click',()=>setTimeout(draw,0));document.addEventListener('gacha-theme-change',()=>{if(!$('#resultWrap')?.hidden)draw();});document.addEventListener('gacha-visual-theme-change',()=>setTimeout(draw,40));window.addEventListener('resize',()=>{if(!$('#resultWrap')?.hidden)draw();});});
 })();
