@@ -1,0 +1,46 @@
+/* v0.7.13 - keep occupation/build inside right identity column */
+
+/* Name/identity block owns a narrow right-side column only. */
+html[data-visual-theme="zzz"] .name-block{
+  right:1.8%!important;
+  width:27%!important;
+  max-width:27%!important;
+}
+
+/* Occupation and build stickers stay entirely to the right of the stat ring. */
+html[data-visual-theme="zzz"] .result-occupation{
+  display:block!important;
+  width:max-content!important;
+  max-width:100%!important;
+  margin:5px 0 4px auto!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+html[data-visual-theme="zzz"] .name-block .urban-stickers{
+  display:flex!important;
+  justify-content:flex-end!important;
+  align-items:center!important;
+  flex-wrap:wrap!important;
+  gap:4px!important;
+  width:100%!important;
+  margin:4px 0 0 auto!important;
+  padding:0!important;
+}
+html[data-visual-theme="zzz"] .name-block .urban-stickers span{
+  flex:0 0 auto!important;
+  max-width:31%!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+}
+
+/* Right information stack stays compact and aligned to the same edge. */
+html[data-visual-theme="zzz"] .investigator-info{
+  right:1.4%!important;
+  width:18.3%!important;
+}
+html[data-visual-theme="zzz"] .rating-block{
+  right:1.4%!important;
+  width:16.8%!important;
+}
