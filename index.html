@@ -19,6 +19,19 @@
 
     <section class="panel input-panel" id="inputPanel">
       <div class="section-title"><span>01</span><h2>探索者データ</h2></div>
+
+      <div class="import-box">
+        <div>
+          <strong>いあきゃらから読み込む</strong>
+          <p>「出力 → ファイルに出力」のテキストファイル、またはココフォリア向け駒出力JSONに対応。ファイルは端末内だけで解析します。</p>
+        </div>
+        <label class="file-import">キャラ出力ファイル
+          <input id="iacharaFile" type="file" accept=".txt,.json,text/plain,application/json">
+          <span>ファイルを選択</span>
+        </label>
+        <div id="importStatus" class="import-status" aria-live="polite"></div>
+      </div>
+
       <div class="identity-grid">
         <label>探索者名<input id="pcName" type="text" maxlength="30" placeholder="例：八代 凪"></label>
         <label>英字名<input id="pcNameEn" type="text" maxlength="40" placeholder="YASHIRO NAGI"></label>
