@@ -1,0 +1,56 @@
+/* v0.7.6 - collision-safe right column + remove stage parallelogram */
+
+/* The name block can become two lines, so start metadata below its worst-case footprint. */
+html[data-visual-theme="zzz"] .investigator-info{
+  top:38.5%!important;
+  height:28.5%!important;
+  gap:5px!important;
+  right:3.8%!important;
+  width:24.2%!important;
+}
+html[data-visual-theme="zzz"] .investigator-info .info-section{
+  padding:6px 8px!important;
+}
+html[data-visual-theme="zzz"] .investigator-info .mini-label{
+  margin-bottom:3px!important;
+  padding:3px 6px!important;
+  font-size:8px!important;
+}
+html[data-visual-theme="zzz"] .investigator-info p:not(.mini-label){
+  font-size:8px!important;
+  line-height:1.35!important;
+}
+
+/* Rating remains in the same right column but compact enough to clear the footer. */
+html[data-visual-theme="zzz"] .rating-block{
+  top:68.2%!important;
+  bottom:auto!important;
+  right:4%!important;
+  width:20%!important;
+  padding:7px 8px!important;
+}
+html[data-visual-theme="zzz"] .rating-row{
+  padding:2px 0!important;
+}
+
+/* Permanently remove the old skewed stage frame in URBAN/ACTION. */
+html[data-visual-theme="zzz"] .character-stage:before{
+  content:none!important;
+  display:none!important;
+  border:0!important;
+  box-shadow:none!important;
+  transform:none!important;
+}
+
+/* Keep skill modules below the ring as in v0.7.5. */
+html[data-visual-theme="zzz"] .skill-block{
+  bottom:2.2%!important;
+  top:auto!important;
+  left:31%!important;
+  width:42.5%!important;
+}
+
+@media(max-width:800px){
+  html[data-visual-theme="zzz"] .investigator-info{top:39%!important;height:28%!important}
+  html[data-visual-theme="zzz"] .rating-block{top:68.5%!important}
+}
