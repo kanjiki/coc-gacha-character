@@ -21,6 +21,21 @@
     return {start,end};
   }
 
+  function normalizeSkillLine(line=''){
+    const s=String(line).trim();
+    if(!s)return line;
+
+    // Cocofolia / いあきゃら command style: CCB<=80 【目星】
+    let m=s.match(/(?:CCB?|1D100)\s*<=\s*(\d{1,3})(?:[^【\[]*)[【\[]\s*([^】\]]+?)\s*[】\]]/i);
+    if(m)return `${m[2].trim()}:${m[1]}`;
+
+    // 1d100<={SAN} 【正気度ロール】などは技能ではないので無効化。
+    if(/1d100\s*<=\s*\{?SAN\}?/i.test(s))return '# NON_SKILL_ROLL';
+
+    // 既に「技能名:80」「技能名 80」形式ならそのまま。
+    return line;
+  }
+
   function looksLikeSkillNumericLine(line=''){
     const s=String(line).trim();
     if(!s)return false;
@@ -35,12 +50,13 @@
     const lines=String(text).replace(/^\uFEFF/,'').split(/\r?\n/);
     const {start,end}=findSection(lines);
     if(start<0||end<0||end<=start){
-      // 見出しが見つからない形式は壊さず、そのまま従来解析へ渡す。
+      // 見出しが見つからない形式は従来解析へ戻す。
       return text;
     }
+
     return lines.map((line,i)=>{
-      if(i>start&&i<end)return line;
-      if(looksLikeSkillNumericLine(line))return line.replace(/\d/g,'x');
+      if(i>start&&i<end)return normalizeSkillLine(line);
+      if(looksLikeSkillNumericLine(line))return '# NON_SKILL_DATA';
       return line;
     }).join('\n');
   }
@@ -53,10 +69,7 @@
       const f=input.files?.[0];
       if(!f||f.__skillSanitizedText)return;
       const originalText=f.text.bind(f);
-      f.text=async()=>{
-        const raw=await originalText();
-        return sanitize(raw);
-      };
+      f.text=async()=>sanitize(await originalText());
       f.__skillSanitizedText=true;
     },true);
   }
