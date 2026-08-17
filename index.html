@@ -5,14 +5,17 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#f4f6f4">
   <title>あなたの探索者がソシャゲに実装されたら？</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=0.2.1">
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
-  <script src="app.js" defer></script>
+  <script src="app.js?v=0.2.1" defer></script>
 </head>
 <body>
   <main class="shell">
     <header class="hero">
-      <p class="eyebrow">TRPG LAB // CHARACTER IMPLEMENTATION TEST</p>
+      <div class="version-row">
+        <p class="eyebrow">TRPG LAB // CHARACTER IMPLEMENTATION TEST</p>
+        <span class="version-badge">v0.2.1 // 2026-08-17</span>
+      </div>
       <h1>あなたの探索者が<br>ソシャゲに実装されたら？</h1>
       <p>CoCの能力値と探索者の行動傾向から、架空ソシャゲでの実装性能を生成します。</p>
     </header>
@@ -20,16 +23,16 @@
     <section class="panel input-panel" id="inputPanel">
       <div class="section-title"><span>01</span><h2>探索者データ</h2></div>
 
-      <div class="import-box">
+      <div class="import-box" id="iacharaImportBox">
         <div>
           <strong>いあきゃらから読み込む</strong>
           <p>「出力 → ファイルに出力」のテキストファイル、またはココフォリア向け駒出力JSONに対応。ファイルは端末内だけで解析します。</p>
         </div>
         <label class="file-import">キャラ出力ファイル
           <input id="iacharaFile" type="file" accept=".txt,.json,text/plain,application/json">
-          <span>ファイルを選択</span>
+          <span>いあきゃらファイルを選択</span>
         </label>
-        <div id="importStatus" class="import-status" aria-live="polite"></div>
+        <div id="importStatus" class="import-status" aria-live="polite">対応形式：.txt / .json</div>
       </div>
 
       <div class="identity-grid">
@@ -111,7 +114,7 @@
 
         <footer>
           <span>あなたの探索者がソシャゲに実装されたら？</span>
-          <span>TRPG LAB</span>
+          <span>TRPG LAB // v0.2.1</span>
         </footer>
       </article>
     </section>
