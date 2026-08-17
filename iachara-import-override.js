@@ -33,11 +33,22 @@
   function parseSkillLine(line,out){
     const s=String(line||'').trim();
     if(!s)return;
+
+    // Cocofolia / chat-palette style: CCB<=80 【目星】
     let m=s.match(/(?:CCB?|1D100)\s*<=\s*(\d{1,3})(?:[^【\[]*)[【\[]\s*([^】\]]+?)\s*[】\]]/i);
     if(m){add(out,m[2],m[1]);return;}
-    m=s.match(/^(.{1,80}?)[\s　]*[：:=][\s　]*(\d{1,3})(?:\s*%)?$/);
+
+    // Label:value style: 目星:80 / 目星：80
+    m=s.match(/^(.{1,80}?)[\s　]*[：:=][\s　]*(\d{1,3})(?:\s|　|$)/);
     if(m){add(out,m[1],m[2]);return;}
-    m=s.match(/^(.{1,80}?)[\s　]+(\d{1,3})(?:\s*%)?$/);
+
+    // Iachara table row: 回避 84 24 0 6 0 0 0
+    // The FIRST numeric column is the current/final skill value; later columns are breakdowns.
+    m=s.match(/^(.+?)[\s　]+(\d{1,3})(?=(?:[\s　]+\d{1,3})*(?:[\s　]+0|[\s　]*$))/);
+    if(m){add(out,m[1],m[2]);return;}
+
+    // Generic fallback: skill name followed by one or more numeric columns.
+    m=s.match(/^([^\d]+?)[\s　]+(\d{1,3})(?:[\s　]+\d{1,3})*/);
     if(m){add(out,m[1],m[2]);return;}
   }
   function extractSkills(text=''){
@@ -47,8 +58,6 @@
     if(start>=0){
       for(let i=start+1;i<lines.length;i++){if(isWeaponHead(lines[i])){end=i;break;}}
     }
-    // Official export variants occasionally omit a standalone heading. Fall back to the
-    // first skill command and stop at the first weapon heading.
     if(start<0){
       start=lines.findIndex(l=>/(?:CCB?|1D100)\s*<=\s*\d{1,3}.*[【\[][^】\]]+[】\]]/i.test(l));
       if(start>=0)start--;
@@ -77,7 +86,6 @@
       try{
         if(typeof window.parseIacharaFile==='function') imported=window.parseIacharaFile(text,file.name)||imported;
       }catch(_){ }
-      // TXT is authoritative: only skills between 技能値 and 武器 are accepted.
       if(!/\.json$/i.test(file.name)) imported.skills=extractSkills(text);
       if(typeof window.assertSixthEdition==='function')window.assertSixthEdition(imported);
       if(typeof window.applyImportedCharacter!=='function')throw new Error('読み込み処理の初期化に失敗しました。');
