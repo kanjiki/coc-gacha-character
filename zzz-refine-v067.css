@@ -1,0 +1,116 @@
+/* v0.6.7 - URBAN / ACTION: dark menu background + clean stat HUD separation */
+
+/* Dark, high-density menu canvas. White information modules remain readable above it. */
+html[data-visual-theme="zzz"] .result-card{
+  background:
+    linear-gradient(132deg,rgba(255,255,255,.035) 0 10%,transparent 10.2% 100%),
+    linear-gradient(312deg,rgba(255,255,255,.025) 0 9%,transparent 9.2% 100%),
+    #17191a!important;
+  color:#f5f5f1;
+}
+html[data-visual-theme="zzz"] .result-card:before{
+  content:""!important;
+  position:absolute!important;
+  inset:0!important;
+  background:
+    radial-gradient(circle,rgba(255,255,255,.13) 0 1px,transparent 1.35px) 0 0/14px 14px,
+    linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px) 0 0/26px 26px,
+    linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px) 0 0/26px 26px,
+    repeating-linear-gradient(135deg,transparent 0 34px,rgba(255,255,255,.025) 34px 36px,transparent 36px 68px)!important;
+  opacity:.58!important;
+  z-index:0!important;
+  pointer-events:none!important;
+}
+html[data-visual-theme="zzz"] .result-card:after{
+  content:""!important;
+  position:absolute!important;
+  left:27%!important;
+  top:-18%!important;
+  width:45%!important;
+  height:142%!important;
+  background:
+    linear-gradient(90deg,
+      transparent 0 13%,
+      var(--ui-accent) 13% 19%,
+      transparent 19% 38%,
+      rgba(var(--accent-rgb),.32) 38% 43%,
+      transparent 43% 61%,
+      rgba(255,255,255,.08) 61% 63%,
+      transparent 63%)!important;
+  transform:skewX(-12deg)!important;
+  opacity:.92!important;
+  z-index:1!important;
+  pointer-events:none!important;
+}
+
+/* Add large, quiet industrial slabs so the backdrop feels like an in-game menu rather than wallpaper. */
+html[data-visual-theme="zzz"] .grid-noise{
+  opacity:1!important;
+  background:
+    linear-gradient(142deg,rgba(0,0,0,.44) 0 18%,transparent 18.2%) 0 0/58% 52% no-repeat,
+    linear-gradient(322deg,rgba(0,0,0,.36) 0 20%,transparent 20.2%) 100% 100%/48% 46% no-repeat,
+    repeating-linear-gradient(90deg,rgba(255,255,255,.20) 0 2px,transparent 2px 7px) 91% 14%/94px 14px no-repeat,
+    repeating-linear-gradient(90deg,rgba(var(--ui-accent-rgb),.88) 0 4px,transparent 4px 9px) 8% 84%/96px 13px no-repeat,
+    linear-gradient(90deg,rgba(255,255,255,.23),rgba(255,255,255,.23)) 76% 10%/126px 2px no-repeat,
+    linear-gradient(90deg,var(--ui-accent),var(--ui-accent)) 10% 71%/82px 4px no-repeat!important;
+  z-index:1!important;
+  pointer-events:none!important;
+}
+
+/* Move the stat ring left enough that the right-hand data card never masks DEX/APP/SIZ labels. */
+html[data-visual-theme="zzz"] .spectrum-overlay{
+  left:42%!important;
+  top:17%!important;
+  z-index:3!important;
+  opacity:.88!important;
+}
+
+/* ROLE launches from the empty lower-left area under PROFILE into the open mouth of the ring. */
+html[data-visual-theme="zzz"] .huge-word{
+  left:15.5%!important;
+  top:51%!important;
+  width:34%!important;
+  max-width:34%!important;
+  padding:7px 18px 10px 22px!important;
+  font-size:clamp(50px,5.9vw,92px)!important;
+  line-height:.76!important;
+  transform:rotate(-8deg) skewX(-12deg)!important;
+  transform-origin:left center!important;
+  clip-path:polygon(0 14%,91% 0,100% 50%,91% 100%,0 86%)!important;
+  z-index:2!important;
+}
+html[data-visual-theme="zzz"] .profile-block:after{
+  left:67%!important;
+  bottom:-54px!important;
+  width:126px!important;
+  height:9px!important;
+  transform:rotate(-13deg) skewX(-22deg)!important;
+}
+
+/* Right modules stay wholly outside the ring. */
+html[data-visual-theme="zzz"] .coc-block{
+  right:3.3%!important;
+  top:47%!important;
+  width:23%!important;
+  z-index:12!important;
+}
+html[data-visual-theme="zzz"] .rating-block{
+  right:3.3%!important;
+  top:68.5%!important;
+  width:23%!important;
+  z-index:12!important;
+}
+
+/* Keep all white/black cards legible on dark canvas. */
+html[data-visual-theme="zzz"] .profile-block,
+html[data-visual-theme="zzz"] .coc-block,
+html[data-visual-theme="zzz"] .rating-block,
+html[data-visual-theme="zzz"] .skill-primary{color:#111!important;}
+html[data-visual-theme="zzz"] .history-block,
+html[data-visual-theme="zzz"] .ultimate{color:#fff!important;}
+html[data-visual-theme="zzz"] footer{color:#fff!important;}
+
+@media(max-width:800px){
+  html[data-visual-theme="zzz"] .spectrum-overlay{left:42%!important;}
+  html[data-visual-theme="zzz"] .huge-word{left:15%!important;top:51%!important;width:35%!important;max-width:35%!important;font-size:68px!important;}
+}
