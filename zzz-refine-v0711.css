@@ -1,0 +1,32 @@
+/* v0.7.11 - fixed 1152x720 result canvas */
+html[data-visual-theme="zzz"] #resultCard,
+html[data-visual-theme="zzz"] .result-card{
+  width:1152px!important;
+  min-width:1152px!important;
+  max-width:1152px!important;
+  height:720px!important;
+  min-height:720px!important;
+  max-height:720px!important;
+  aspect-ratio:auto!important;
+  flex:0 0 1152px!important;
+}
+
+/* Scale fixed-canvas typography to the smaller output size. */
+html[data-visual-theme="zzz"] .name-block h2{
+  font-size:43px!important;
+}
+html[data-visual-theme="zzz"] .huge-word{
+  font-size:72px!important;
+}
+
+@media(max-width:800px){
+  html[data-visual-theme="zzz"] #resultCard,
+  html[data-visual-theme="zzz"] .result-card{
+    width:1152px!important;
+    min-width:1152px!important;
+    max-width:1152px!important;
+    height:720px!important;
+    min-height:720px!important;
+    max-height:720px!important;
+  }
+}
