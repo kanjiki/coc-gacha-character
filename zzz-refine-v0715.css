@@ -1,0 +1,66 @@
+/* v0.7.15 - top identity cleanup / occupation in build / lower image travel */
+
+/* Move the file label to the upper-left corner. */
+html[data-visual-theme="zzz"] .topline{
+  left:3.6%!important;
+  right:auto!important;
+  top:3.2%!important;
+  width:auto!important;
+  justify-content:flex-start!important;
+}
+html[data-visual-theme="zzz"] .topline>span:first-child{display:none!important;}
+html[data-visual-theme="zzz"] .topline>span:last-child{
+  display:inline-block!important;
+  background:var(--ui-accent)!important;
+  color:#111!important;
+  border:2px solid #111!important;
+  padding:7px 12px!important;
+  box-shadow:3px 3px 0 #111!important;
+}
+
+/* Lift name and rarity. */
+html[data-visual-theme="zzz"] .name-block{
+  top:5.6%!important;
+  right:1.6%!important;
+  width:29%!important;
+  max-width:29%!important;
+}
+html[data-visual-theme="zzz"] #rarityLine{
+  top:21.8%!important;
+  right:2.2%!important;
+  width:25.5%!important;
+}
+
+/* Occupation now belongs to PROFILE / BUILD. */
+html[data-visual-theme="zzz"] .profile-block dl .occupation-row{
+  display:grid!important;
+  grid-template-columns:88px 1fr!important;
+  padding:5px 0!important;
+  border-bottom:1px solid rgba(0,0,0,.28)!important;
+}
+html[data-visual-theme="zzz"] .profile-block dl .occupation-row dt{
+  color:#555!important;
+}
+html[data-visual-theme="zzz"] .profile-block dl .occupation-row dd{
+  font-weight:900!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+}
+html[data-visual-theme="zzz"] .result-occupation{display:none!important;}
+
+/* With occupation removed from identity, build stickers get a clean row. */
+html[data-visual-theme="zzz"] .name-block .urban-stickers{
+  margin-top:7px!important;
+  width:100%!important;
+  max-width:100%!important;
+  justify-content:flex-end!important;
+}
+
+/* Keep the fixed 1152x720 canvas and let the image travel lower without clipping. */
+html[data-visual-theme="zzz"] .character-stage{
+  overflow:visible!important;
+}
+html[data-visual-theme="zzz"] .character-stage img{
+  max-height:none!important;
+}
