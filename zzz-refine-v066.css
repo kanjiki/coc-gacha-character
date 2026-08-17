@@ -1,0 +1,123 @@
+/* v0.6.6 - URBAN / ACTION: role ribbon routing + denser game-menu background */
+
+/* ROLE ribbon now starts below PROFILE and points into the open left side of the stat ring. */
+html[data-visual-theme="zzz"] .huge-word{
+  left:18.5%!important;
+  top:43.5%!important;
+  width:39%!important;
+  max-width:39%!important;
+  padding:7px 22px 10px 24px!important;
+  background:var(--accent)!important;
+  color:#fff!important;
+  opacity:.94!important;
+  font-size:clamp(54px,6.5vw,102px)!important;
+  line-height:.76!important;
+  letter-spacing:-.085em!important;
+  font-style:italic!important;
+  font-weight:1000!important;
+  transform:rotate(-8deg) skewX(-12deg)!important;
+  transform-origin:left center!important;
+  clip-path:polygon(0 11%,92% 0,100% 49%,92% 100%,0 88%);
+  text-shadow:5px 5px 0 rgba(0,0,0,.14);
+  z-index:2!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+}
+html[data-visual-theme="zzz"] .huge-word:after{
+  content:"// ROLE //";
+  position:absolute;
+  right:18px;
+  top:7px;
+  color:rgba(255,255,255,.72);
+  font:1000 8px/1 monospace;
+  letter-spacing:.14em;
+}
+
+/* A small connector under PROFILE visually launches the ROLE ribbon. */
+html[data-visual-theme="zzz"] .profile-block:after{
+  content:"";
+  position:absolute;
+  left:78%;
+  bottom:-20px;
+  width:86px;
+  height:8px;
+  background:var(--accent);
+  transform:rotate(-8deg) skewX(-20deg);
+  box-shadow:0 4px 0 rgba(0,0,0,.12);
+  z-index:-1;
+}
+
+/* Denser urban-menu background: grid + halftone + technical stripes + dark corner slabs. */
+html[data-visual-theme="zzz"] .result-card{
+  background:
+    linear-gradient(128deg,rgba(17,17,17,.92) 0 8.5%,transparent 8.7% 100%),
+    linear-gradient(308deg,rgba(17,17,17,.88) 0 7%,transparent 7.2% 100%),
+    linear-gradient(90deg,transparent 0 72%,rgba(17,17,17,.045) 72% 73%,transparent 73% 100%),
+    #efeee8!important;
+}
+html[data-visual-theme="zzz"] .result-card:before{
+  content:""!important;
+  position:absolute!important;
+  inset:0!important;
+  background-image:
+    radial-gradient(circle,rgba(0,0,0,.16) 0 1px,transparent 1.4px),
+    repeating-linear-gradient(135deg,transparent 0 18px,rgba(0,0,0,.035) 18px 20px,transparent 20px 38px),
+    linear-gradient(rgba(0,0,0,.045) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,0,0,.045) 1px,transparent 1px)!important;
+  background-size:13px 13px,52px 52px,24px 24px,24px 24px!important;
+  background-position:86% 18%,0 0,0 0,0 0!important;
+  mask-image:linear-gradient(90deg,rgba(0,0,0,.25),#000 18%,#000 82%,rgba(0,0,0,.55));
+  opacity:.5!important;
+  z-index:0!important;
+  pointer-events:none!important;
+}
+
+/* Re-purpose the diagonal background layer as technical color rails, not a giant empty stripe. */
+html[data-visual-theme="zzz"] .result-card:after{
+  content:""!important;
+  position:absolute!important;
+  left:29%!important;
+  top:-16%!important;
+  width:38%!important;
+  height:138%!important;
+  background:
+    linear-gradient(90deg,
+      transparent 0 16%,
+      var(--ui-accent) 16% 22%,
+      transparent 22% 42%,
+      rgba(var(--accent-rgb),.20) 42% 47%,
+      transparent 47% 64%,
+      rgba(17,17,17,.08) 64% 66%,
+      transparent 66%)!important;
+  transform:skewX(-12deg)!important;
+  z-index:1!important;
+  pointer-events:none!important;
+}
+
+/* Extra visual texture through the existing grid-noise layer. */
+html[data-visual-theme="zzz"] .grid-noise{
+  opacity:1!important;
+  background:
+    repeating-linear-gradient(90deg,rgba(0,0,0,.08) 0 2px,transparent 2px 7px) 93% 17%/88px 16px no-repeat,
+    repeating-linear-gradient(90deg,rgba(0,0,0,.11) 0 3px,transparent 3px 6px) 7% 89%/104px 12px no-repeat,
+    linear-gradient(90deg,rgba(0,0,0,.08),rgba(0,0,0,.08)) 72% 11%/118px 2px no-repeat,
+    linear-gradient(90deg,rgba(var(--ui-accent-rgb),.72),rgba(var(--ui-accent-rgb),.72)) 11% 72%/74px 4px no-repeat!important;
+  z-index:1!important;
+  pointer-events:none!important;
+}
+
+/* Keep the ring above background texture but below character/UI cards. */
+html[data-visual-theme="zzz"] .spectrum-overlay{z-index:3!important;}
+html[data-visual-theme="zzz"] .character-stage{z-index:5!important;}
+html[data-visual-theme="zzz"] .profile-block,
+html[data-visual-theme="zzz"] .name-block,
+html[data-visual-theme="zzz"] .coc-block,
+html[data-visual-theme="zzz"] .rating-block,
+html[data-visual-theme="zzz"] .skill-block,
+html[data-visual-theme="zzz"] .history-block,
+html[data-visual-theme="zzz"] .topline,
+html[data-visual-theme="zzz"] footer{z-index:10!important;}
+
+@media(max-width:800px){
+  html[data-visual-theme="zzz"] .huge-word{left:19%!important;top:44%!important;width:40%!important;max-width:40%!important;font-size:72px!important;}
+}
