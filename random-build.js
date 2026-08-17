@@ -1,8 +1,19 @@
 (()=>{
   const $=s=>document.querySelector(s);
   const pick=a=>a[Math.floor(Math.random()*a.length)];
+  const weightedPick=items=>{
+    const total=items.reduce((s,x)=>s+x.weight,0);
+    let r=Math.random()*total;
+    for(const item of items){r-=item.weight;if(r<0)return item.value;}
+    return items.at(-1).value;
+  };
 
   const RARITIES=['★★★★','★★★★★','★★★★★★'];
+  const IMPLEMENTATION=[
+    {value:'STANDARD',weight:90},
+    {value:'LIMITED',weight:8},
+    {value:'EVENT',weight:2}
+  ];
   const DIFFICULTY=['EASY','TECHNICAL'];
   const FEEL=['BURST','SETUP','REACTIVE'];
   const DEPENDENCY=['LOW','MID','HIGH'];
@@ -55,12 +66,14 @@
 
   function renderRarity(){
     const rarity=pick(RARITIES);
-    const line=$('#rarityLine');if(line)line.textContent=`${rarity} STANDARD`;
-    return rarity;
+    const implementation=weightedPick(IMPLEMENTATION);
+    const line=$('#rarityLine');if(line)line.textContent=`${rarity} ${implementation}`;
+    return {rarity,implementation};
   }
 
   function reroll(){
-    const state={rarity:renderRarity(),playstyle:renderPlaystyle(),rating:renderRatings()};
+    const rarityState=renderRarity();
+    const state={rarity:rarityState.rarity,implementation:rarityState.implementation,playstyle:renderPlaystyle(),rating:renderRatings()};
     window.__coc6RandomBuild=state;
     document.dispatchEvent(new CustomEvent('coc6-random-build-rerolled',{detail:state}));
     return state;
