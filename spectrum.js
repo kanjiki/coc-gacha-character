@@ -34,16 +34,18 @@
 
     const san=$('#stat_SAN')?.value||'—';
     if(urban){
-      c.fillStyle='rgba(255,255,255,.78)';
+      c.fillStyle='rgba(255,255,255,.72)';
       c.font='900 10px monospace';
-      c.fillText('SAN',cx,cy-22);
+      c.fillText('SAN',cx,cy-42);
       c.save();
-      c.translate(cx,cy+12);
+      c.translate(cx,cy);
       c.transform(1,0,-0.16,1,0,0);
       c.fillStyle='#ffffff';
       c.strokeStyle='rgba(0,0,0,.72)';
       c.lineWidth=3;
       c.font='italic 1000 46px Arial Black, sans-serif';
+      c.textAlign='center';
+      c.textBaseline='middle';
       c.strokeText(san,0,0);
       c.fillText(san,0,0);
       c.restore();
