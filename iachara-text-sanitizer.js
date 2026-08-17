@@ -1,80 +1,80 @@
 (()=>{
-  const SKILL_HEAD=/技能\s*値/i;
-  const WEAPON_HEAD=/武器/i;
-  const STAT_HEAD=/^(STR|CON|POW|DEX|APP|SIZ|INT|EDU|SAN|HP|MP|正気度|現在正気度|耐久力|マジックポイント)\b/i;
+  if(window.__coc6FileTextPatched)return;
+  window.__coc6FileTextPatched=true;
 
-  function cleanHeading(s=''){
-    return String(s)
+  const originalText=File.prototype.text;
+
+  function normalizeHeading(line=''){
+    return String(line)
       .trim()
-      .replace(/^[\s■◆●◇○・#\-*_=【\[「『]+/,'')
-      .replace(/[】\]」』:=：\s]+$/,'')
-      .trim();
+      .replace(/[【】\[\]「」『』<>＜＞]/g,'')
+      .replace(/[■◆◇●○▼▽▶▷★☆※#＃=＝:\-―ー_＿]/g,'')
+      .replace(/\s|　/g,'')
+      .toLowerCase();
+  }
+
+  function isSkillStart(line=''){
+    const n=normalizeHeading(line);
+    return n==='技能値'||n==='技能'||n==='skill'||n==='skills'||n==='skillvalue'||n==='skillvalues';
+  }
+
+  function isWeaponStart(line=''){
+    const n=normalizeHeading(line);
+    return n==='武器'||n==='武器類'||n==='weapon'||n==='weapons';
   }
 
   function findSection(lines){
-    let start=-1,end=-1;
-    for(let i=0;i<lines.length;i++){
-      const h=cleanHeading(lines[i]);
-      if(start<0&&SKILL_HEAD.test(h)){start=i;continue;}
-      if(start>=0&&WEAPON_HEAD.test(h)){end=i;break;}
+    const start=lines.findIndex(isSkillStart);
+    if(start<0)return null;
+    let end=-1;
+    for(let i=start+1;i<lines.length;i++){
+      if(isWeaponStart(lines[i])){end=i;break;}
     }
-    return {start,end};
+    return end>start?{start,end}:null;
   }
 
-  function normalizeSkillLine(line=''){
-    const s=String(line).trim();
-    if(!s)return line;
+  function skillCommandToPlain(line=''){
+    const raw=String(line).trim();
+    if(!raw)return line;
 
-    // Cocofolia / いあきゃら command style: CCB<=80 【目星】
-    let m=s.match(/(?:CCB?|1D100)\s*<=\s*(\d{1,3})(?:[^【\[]*)[【\[]\s*([^】\]]+?)\s*[】\]]/i);
-    if(m)return `${m[2].trim()}:${m[1]}`;
+    let m=raw.match(/(?:CCB?|1D100)\s*<=\s*(\d{1,3})(?:[^【\[]*)[【\[]\s*([^】\]]+?)\s*[】\]]/i);
+    if(m)return `${m[2].trim()}: ${Number(m[1])}`;
 
-    // 1d100<={SAN} 【正気度ロール】などは技能ではないので無効化。
-    if(/1d100\s*<=\s*\{?SAN\}?/i.test(s))return '# NON_SKILL_ROLL';
+    if(/^.{1,60}?[\s　]*[：:=]?[\s　]+\d{1,3}(?:\s*%)?\s*$/.test(raw))return line;
 
-    // 既に「技能名:80」「技能名 80」形式ならそのまま。
+    m=raw.match(/^(\d{1,3})(?:\s*%)?[\s　]+(.{1,60})$/);
+    if(m)return `${m[2].trim()}: ${Number(m[1])}`;
+
     return line;
   }
 
-  function looksLikeSkillNumericLine(line=''){
+  function isCommandRoll(line=''){
     const s=String(line).trim();
-    if(!s)return false;
-    if(STAT_HEAD.test(s))return false;
-    if(/(?:CCB?|1D100)\s*<=/i.test(s))return true;
-    if(/[【\[].+?[】\]]/.test(s)&&/\d/.test(s))return true;
-    if(/^.{1,60}?[\s　:：=]+\d{1,3}(?:\s*%)?$/.test(s))return true;
-    return false;
+    return /(?:CCB?|1D100)\s*<=/i.test(s)||/^\s*\d*d\d+(?:[+\-]\d*d\d+)*(?:[+\-]\d+)?/i.test(s);
   }
 
-  function sanitize(text=''){
-    const lines=String(text).replace(/^\uFEFF/,'').split(/\r?\n/);
-    const {start,end}=findSection(lines);
-    if(start<0||end<0||end<=start){
-      // 見出しが見つからない形式は従来解析へ戻す。
-      return text;
-    }
+  function sanitize(raw=''){
+    const text=String(raw).replace(/^\uFEFF/,'');
+    const trimmed=text.trim();
+    if(!trimmed||/^[\[{]/.test(trimmed))return raw;
+
+    const lines=text.split(/\r?\n/);
+    const section=findSection(lines);
+    if(!section)return raw;
 
     return lines.map((line,i)=>{
-      if(i>start&&i<end)return normalizeSkillLine(line);
-      if(looksLikeSkillNumericLine(line))return '# NON_SKILL_DATA';
+      if(i>section.start&&i<section.end)return skillCommandToPlain(line);
+      if(isCommandRoll(line))return '';
       return line;
     }).join('\n');
   }
 
-  function attach(){
-    const input=document.querySelector('#iacharaFile');
-    if(!input||input.dataset.skillSanitizer==='1')return;
-    input.dataset.skillSanitizer='1';
-    input.addEventListener('change',()=>{
-      const f=input.files?.[0];
-      if(!f||f.__skillSanitizedText)return;
-      const originalText=f.text.bind(f);
-      f.text=async()=>sanitize(await originalText());
-      f.__skillSanitizedText=true;
-    },true);
-  }
+  File.prototype.text=async function(...args){
+    const raw=await originalText.apply(this,args);
+    const name=String(this?.name||'').toLowerCase();
+    if(name.endsWith('.json'))return raw;
+    return sanitize(raw);
+  };
 
   window.sanitizeIacharaTextForSkills=sanitize;
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',attach);
-  else attach();
 })();
