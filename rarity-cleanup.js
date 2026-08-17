@@ -5,8 +5,7 @@
     if(!el)return;
     const text=(el.textContent||'').trim();
     const stars=(text.match(/★+/)||['★★★★'])[0];
-    const limited=/LIMITED|限定/i.test(text);
-    el.textContent=`${stars} ${limited?'限定':'恒常'}`;
+    el.textContent=`${stars} STANDARD`;
   }
   document.addEventListener('DOMContentLoaded',()=>{
     $('#diagnoseBtn')?.addEventListener('click',()=>setTimeout(cleanRarity,0));
