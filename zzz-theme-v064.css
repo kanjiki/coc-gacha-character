@@ -1,0 +1,4 @@
+@import url('zzz-theme.css?v=0.6.4');
+@import url('zzz-refine-v064.css?v=0.6.4');
+html[data-visual-theme="zzz"] .hero:after{content:"/// 06 // INVESTIGATOR // URBAN TEST"}
+html[data-visual-theme="zzz"] .result-card .character-stage:after{content:"// ACTIVE INVESTIGATOR //"}
