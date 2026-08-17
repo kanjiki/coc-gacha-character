@@ -2,11 +2,12 @@
   const $=s=>document.querySelector(s);
   let favoriteInput=null;
   let favoriteList=null;
+  let rarityHome=null;
 
   function ensureMetaScript(){
     if(document.querySelector('script[data-investigator-meta]'))return;
     const s=document.createElement('script');
-    s.src='investigator-meta.js?v=0.7.1';
+    s.src='investigator-meta.js?v=0.7.9';
     s.defer=true;
     s.dataset.investigatorMeta='1';
     document.head.appendChild(s);
@@ -35,12 +36,35 @@
     skills.forEach(([name,value])=>{const o=document.createElement('option');o.value=name;o.label=`${name} ${value}`;favoriteList.appendChild(o);});
   }
 
+  function rememberRarityHome(){
+    const rarity=$('#rarityLine');
+    if(!rarity||rarityHome)return;
+    rarityHome={parent:rarity.parentNode,next:rarity.nextSibling};
+  }
+
+  function placeRarity(){
+    const rarity=$('#rarityLine');
+    if(!rarity)return;
+    rememberRarityHome();
+    const urban=document.documentElement.dataset.visualTheme==='zzz';
+    if(urban){
+      const name=$('.name-block h2');
+      if(name&&rarity.parentNode!==name.parentNode){name.insertAdjacentElement('afterend',rarity);}
+      rarity.classList.add('rarity-under-name');
+    }else if(rarityHome?.parent){
+      if(rarityHome.next&&rarityHome.next.parentNode===rarityHome.parent)rarityHome.parent.insertBefore(rarity,rarityHome.next);
+      else rarityHome.parent.appendChild(rarity);
+      rarity.classList.remove('rarity-under-name');
+    }
+  }
+
   function sync(){
     const role=$('#roleText')?.textContent?.trim()||'ROLE';
     const attr=$('#attributeText')?.textContent?.trim()||'ATTRIBUTE';
     const pos=$('#positionText')?.textContent?.trim()||'POSITION';
     const r=$('#urbanRole'),a=$('#urbanAttr'),p=$('#urbanPos');
     if(r)r.textContent=role;if(a)a.textContent=attr;if(p)p.textContent=pos;
+    placeRarity();
   }
 
   function applyFavoriteSkillToResult(){
@@ -61,7 +85,8 @@
   ensureMetaScript();
   document.addEventListener('DOMContentLoaded',()=>{
     document.querySelector('.name-font-control')?.remove();
-    ensureFavoriteSkillUI();refreshFavoriteOptions();
+    rememberRarityHome();
+    ensureFavoriteSkillUI();refreshFavoriteOptions();placeRarity();
     $('#iacharaFile')?.addEventListener('change',()=>setTimeout(refreshFavoriteOptions,150));
     $('#diagnoseBtn')?.addEventListener('click',()=>setTimeout(()=>{sync();applyFavoriteSkillToResult();},0));
     document.addEventListener('gacha-visual-theme-change',()=>{sync();document.querySelector('.name-font-control')?.remove();});
