@@ -1,0 +1,19 @@
+:root{--result-safe-right:25.5%}
+/* v0.4.0 layout pass: keep the fixed ring in the character zone, not the text columns */
+.spectrum-overlay{left:42.5%!important;top:14.5%!important;width:400px!important;height:400px!important;z-index:3!important}
+.name-block{right:3.5%!important;top:9.5%!important;width:24.5%!important;z-index:12!important}
+.name-block h2{font-size:clamp(28px,3vw,44px)!important;line-height:.94!important;overflow-wrap:anywhere;word-break:break-word;max-width:100%;margin-bottom:5px!important}
+.name-block>p:last-child{font-size:11px!important;line-height:1.2!important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.coc-block{right:3.5%!important;top:47%!important;width:24.5%!important;z-index:12!important;background:linear-gradient(90deg,rgba(245,247,245,.82),rgba(245,247,245,.96) 18%,rgba(245,247,245,.98));padding:5px 0 2px 10px}
+.coc-block .mini-label{margin-bottom:5px}
+.result-stats{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:2px 6px!important;font-size:8.5px!important}
+.result-stats div{min-width:0;white-space:nowrap}
+.rating-block{right:4%!important;top:68.5%!important;width:23%!important;z-index:12!important;background:linear-gradient(90deg,rgba(245,247,245,.86),rgba(245,247,245,.98));padding-left:10px}
+.skill-block{left:31%!important;bottom:5.5%!important;width:40%!important;z-index:13!important;background:linear-gradient(0deg,rgba(245,247,245,.94),rgba(245,247,245,.72) 78%,transparent);padding-top:3px}
+.history-block{z-index:13!important}
+.profile-block{z-index:13!important}
+.character-stage{z-index:6!important}
+.character-stage img{z-index:7!important}
+/* avoid the fixed ring covering key text even with unusual image positioning */
+.topline,footer{z-index:14!important}
+@media(max-width:800px){.spectrum-overlay{left:42%!important;top:14.5%!important}.name-block{width:24.5%!important}.coc-block{top:47%!important}}
