@@ -26,7 +26,9 @@
     document.documentElement.style.setProperty('--card-bg-user-deep',deeper);
     const card=$('#resultCard');
     if(card){
-      card.style.background=`linear-gradient(135deg, ${dark} 0%, ${deeper} 100%)`;
+      const bg=`linear-gradient(132deg,rgba(255,255,255,.035) 0 10%,transparent 10.2% 100%),linear-gradient(312deg,rgba(255,255,255,.025) 0 9%,transparent 9.2% 100%),linear-gradient(135deg,${dark} 0%,${deeper} 100%)`;
+      card.style.setProperty('background',bg,'important');
+      card.style.setProperty('background-color',dark,'important');
     }
     localStorage.setItem('coc6-background-color',hex);
     const a=$('#backgroundColor'),b=$('#resultBackgroundColor');
