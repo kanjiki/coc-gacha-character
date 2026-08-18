@@ -48,12 +48,18 @@
 
   function ratio(){const rect=card?.getBoundingClientRect();return rect&&rect.width?card.offsetWidth/rect.width:1;}
   function canDragImage(){return img&&img.style.display!=='none'&&img.getAttribute('src');}
+
+  // Mobile browsers otherwise interpret the gesture as page scrolling and
+  // cancel pointer events before the investigator can be repositioned.
+  if(stage){stage.style.touchAction='none';stage.style.userSelect='none';}
+  if(img){img.style.touchAction='none';img.style.userSelect='none';img.style.webkitUserDrag='none';}
+
   stage?.addEventListener('pointerdown',e=>{
     if(!canDragImage())return;e.preventDefault();stage.setPointerCapture?.(e.pointerId);
     drag={id:e.pointerId,startX:e.clientX,startY:e.clientY,originX:imageState.x,originY:imageState.y,ratio:ratio()};stage.classList.add('is-dragging');
   });
   stage?.addEventListener('pointermove',e=>{
-    if(!drag||drag.id!==e.pointerId)return;
+    if(!drag||drag.id!==e.pointerId)return;e.preventDefault();
     imageState.x=Math.max(-320,Math.min(320,drag.originX+(e.clientX-drag.startX)*drag.ratio));
     imageState.y=Math.max(-280,Math.min(460,drag.originY+(e.clientY-drag.startY)*drag.ratio));
     applyImage();
