@@ -1,4 +1,4 @@
-/* v0.7.27 - compact SKILL / ULTIMATE beside GAME RATING */
+/* v0.7.30 hotfix - compact SKILL / wider ULTIMATE beside GAME RATING */
 
 html[data-visual-theme="zzz"] .skill-block{
   left:28.5%!important;
@@ -22,12 +22,12 @@ html[data-visual-theme="zzz"] .ultimate h3{
   text-overflow:ellipsis!important;
 }
 
-/* ULTIMATE remains detached to the right and adjacent to GAME RATING. */
+/* ULTIMATE stays detached to the right and is widened to the full safe gap. */
 html[data-visual-theme="zzz"] .skill-block .ultimate{
   position:absolute!important;
   left:calc(100% + 10px)!important;
   bottom:0!important;
-  width:74%!important;
+  width:100%!important;
   min-width:0!important;
   min-height:118px!important;
   margin:0!important;
@@ -46,6 +46,6 @@ html[data-visual-theme="zzz"] .rating-block{
   }
   html[data-visual-theme="zzz"] .skill-block .ultimate{
     left:calc(100% + 10px)!important;
-    width:74%!important;
+    width:100%!important;
   }
 }
