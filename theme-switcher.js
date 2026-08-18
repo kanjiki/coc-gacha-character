@@ -3,13 +3,21 @@
   const link=$('#visualThemeStylesheet');
   const badge=$('.version-badge');
 
-  function ensureRandomBuild(){
-    if(document.querySelector('script[data-random-build]'))return;
+  function ensureScript(src,key){
+    if(document.querySelector(`script[data-${key}]`))return;
     const s=document.createElement('script');
-    s.src='random-build.js?v=0.7.30';
+    s.src=src;
     s.defer=true;
-    s.dataset.randomBuild='1';
+    s.dataset[key]='1';
     document.head.appendChild(s);
+  }
+
+  function ensureRandomBuild(){
+    ensureScript('random-build.js?v=0.7.30','randomBuild');
+  }
+
+  function ensureBackgroundHotfix(){
+    ensureScript('background-color-hotfix-v0730.js?v=1','backgroundHotfix');
   }
 
   function ensureSkillLayout(){
@@ -39,6 +47,7 @@
 
   ensureRandomBuild();
   ensureSkillLayout();
+  ensureBackgroundHotfix();
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',applyUrban,{once:true});
   else applyUrban();
 })();
