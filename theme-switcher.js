@@ -20,6 +20,10 @@
     ensureScript('background-color-hotfix-v0730.js?v=1','backgroundHotfix');
   }
 
+  function ensureMobileDownloadHotfix(){
+    ensureScript('mobile-download-hotfix-v0730.js?v=1','mobileDownloadHotfix');
+  }
+
   function ensureSkillLayout(){
     if(document.querySelector('link[data-skill-layout]'))return;
     const l=document.createElement('link');
@@ -48,6 +52,7 @@
   ensureRandomBuild();
   ensureSkillLayout();
   ensureBackgroundHotfix();
+  ensureMobileDownloadHotfix();
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',applyUrban,{once:true});
   else applyUrban();
 })();
